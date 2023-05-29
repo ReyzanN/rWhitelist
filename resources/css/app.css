@@ -1,0 +1,106 @@
+/*
+Fonts
+*/
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;400&display=swap');
+
+.Nunito200 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 200;
+}
+
+.Nunito400 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 3.5rem;
+}
+
+/*
+Font Color
+*/
+.customPurple {
+    color: #D76AA5;
+}
+
+.customPurple:hover {
+    transition: 0.5s;
+    color: #646790;
+}
+
+/*
+Common part Background
+*/
+.MainBodyIndex {
+    margin:0;
+    padding:0;
+    background-image: url("../img/public/background.png");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+html {
+    height: 100%;
+}
+
+/*
+Tools
+*/
+.top100vh {
+    margin-top: 100vh;
+}
+
+.top75vh {
+    margin-top: 75vh;
+}
+
+.top50vh {
+    margin-top: 50vh;
+}
+
+.top25vh {
+    margin-top: 25vh;
+}
+.top10vh {
+    margin-top: 10vh;
+}
+
+.hrBasic {
+    height: 1px;
+    background-color: #2d2d2d;
+    border: none;
+}
+
+.bgPurple {
+    background-color: #b56690;
+    border: none;
+}
+
+.bgPurple:hover {
+    background-color: #b56690;
+    transition: 0.5s;
+}
+
+/*
+Public/auth/index
+*/
+.firstSquare{
+    background-color: #1D1D1D;
+    height: 161px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+}
+
+.img001Auth {
+    margin-top: -80px;
+}
+
+.secondSquare {
+    background-color: #1D1D1D;
+    height: 279px;
+}
+
+.txtButtonAuth {
+    text-transform: uppercase;
+}
