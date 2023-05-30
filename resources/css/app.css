@@ -81,6 +81,27 @@ Tools
     transition: 0.5s;
 }
 
+.bgPurpleButton {
+    background-color: #b56690;
+    border: none;
+}
+
+.bgPurpleButton:hover {
+    background-color: #b56690;
+    transition: 0.5s;
+}
+
+.bgPurpleButton:focus:active {
+    transition: 0.5s;
+    background-color: #646790;
+}
+
+.noStyle {
+    text-underline: none !important;
+    color: rgba(0, 128, 0, 0);
+}
+
+
 /*
 Public/auth/index
 */

@@ -18,9 +18,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'discordAccountId',
+        'discordUserName',
+        'discordEmail',
+        'lastConnection'
     ];
 
     /**
@@ -29,7 +30,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'discordAccountId',
         'remember_token',
     ];
 
@@ -42,4 +43,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public static function checkAccount(string $DiscordIDAccount) : bool {
+        $User = User::where('discordAccountId', '=',$DiscordIDAccount)->get()->first();
+        if ($User) { return true; }
+        return false;
+    }
+
+    public static function findByDiscord(string $DiscordIDAccount) : User|Bool {
+        $User = User::where('discordAccountId', '=',$DiscordIDAccount)->get()->first();
+        if ($User) { return $User; }
+        return false;
+    }
+
+    public function updateLastConnection(){
+        $this->update(['lastConnection' => new \DateTime()]);
+    }
 }

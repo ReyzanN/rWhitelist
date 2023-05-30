@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardPublicController;
 use App\Http\Controllers\HomePublicController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/* Base Route */
 Route::get('/', HomePublicController::class)->name('base');
+
+/* Auth Route */
+Route::get('/login',[AuthController::class, 'Login'])->name('auth.login');
+Route::get('/loginValidation', [AuthController::class, 'TryLogin'])->name('auth.trylogin');
+Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
+
+Route::middleware(['auth'])->group(function(){
+    /* Dashboard */
+    Route::get('/dashboard', DashboardPublicController::class)->name('dashPublic.index');
+});
