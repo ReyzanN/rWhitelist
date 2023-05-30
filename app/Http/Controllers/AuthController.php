@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\DiscordAuth;
 use App\Models\User;
+use App\Models\UserRank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use JetBrains\PhpStorm\NoReturn;
-use function mysql_xdevapi\getSession;
 
 class AuthController extends Controller
 {
@@ -31,14 +31,20 @@ class AuthController extends Controller
         );
         if (!User::checkAccount($ClientInfo['DiscordId'])){
             try {
-                User::create([
+                $TempUser = User::create([
                     'discordAccountId' => $ClientInfo['DiscordId'],
                     'discordUserName' => $ClientInfo['DiscordUserName'],
                     'discordEmail' => $ClientInfo['Email'],
                     'lastConnection' => new \DateTime(),
                 ]);
+                foreach ($ClientInfo['DiscordRole'] as $Role){
+                    UserRank::create([
+                        'userId' => $TempUser->id,
+                        'roleId' => $Role
+                    ]);
+                }
             }catch (\Exception $e){
-                // Silence is golden
+               // Silence is golden
             }
         }
         try {
@@ -48,10 +54,11 @@ class AuthController extends Controller
                 Auth::login($User);
                 session()->regenerate();
                 $User->updateLastConnection();
+                $User->updateRole($ClientInfo['DiscordRole']);
                 $auth = true;
             }
         }catch (\Exception $e){
-            // Silence is golden
+            dd($e);
         }
         if ($auth){
             // Redirect dashboard
