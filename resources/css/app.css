@@ -125,3 +125,13 @@ Public/auth/index
 .txtButtonAuth {
     text-transform: uppercase;
 }
+
+/*
+public/dashboard/index
+*/
+
+.imgLogo {
+    width: 210px;
+    height: 184px;
+    margin-top: -80px;
+}
