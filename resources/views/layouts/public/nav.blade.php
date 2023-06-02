@@ -3,6 +3,7 @@
         <img src="/img/dashLogo.png" alt="logo" class="imgLogo">
     </div>
     <div class="">
+        @include('layouts.public.errors')
         <div class="row d-flex justify-items-center align-items-center">
             <ul class="text-center poppins">
                 <li class="list-group-item mt-2">
