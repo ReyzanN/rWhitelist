@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardPublicController;
+use App\Http\Controllers\DashboardRecruitersController;
 use App\Http\Controllers\HomePublicController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,11 @@ Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
 Route::middleware(['auth'])->group(function(){
     /* Dashboard */
     Route::get('/dashboard', DashboardPublicController::class)->name('dashPublic.index');
+
+    /*
+     * Recruiters Route
+     */
+    Route::middleware(['recruiters'])->group(function(){
+        Route::get('/dashboard/recruiters', DashboardRecruitersController::class)->name('dashRecruiters.index');
+    });
 });

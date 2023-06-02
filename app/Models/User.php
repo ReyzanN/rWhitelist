@@ -100,4 +100,45 @@ class User extends Authenticatable
             }
         }
     }
+
+    /*
+     * Rank Checking
+     */
+
+    /**
+     * @usage Check if user is WL
+     * @return bool
+     */
+    public function isWl() : bool {
+        foreach ($this->userRank() as $R) {
+            if ($R->roleId == env('APP_DISCORD_WL')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @usage Check if user is Recruiter
+     * @return bool
+     */
+    public function isRe() : bool {
+        foreach ($this->userRank() as $R) {
+            if ($R->roleId == env('APP_DISCORD_RE')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isRanked(): bool {
+        foreach ($this->userRank() as $R) {
+            if ($R->roleId == env('APP_DISCORD_AD') || $R->roleId == env('APP_DISCORD_MOD') || $R->roleId == env('APP_DISCORD_SUP')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
