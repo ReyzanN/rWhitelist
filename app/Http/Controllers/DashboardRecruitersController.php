@@ -12,6 +12,6 @@ class DashboardRecruitersController extends Controller
     }
 
     public function __invoke(){
-        dd(auth()->user());
+        return view('recruiters.dashboard.index');
     }
 }
