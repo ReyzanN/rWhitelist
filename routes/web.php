@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardPublicController;
 use App\Http\Controllers\DashboardRecruitersController;
 use App\Http\Controllers\HomePublicController;
+use App\Http\Controllers\QCMController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,13 @@ Route::middleware(['auth'])->group(function(){
      * Recruiters Route
      */
     Route::middleware(['recruiters'])->group(function(){
+        /*
+         * Dashboard
+         */
         Route::get('/dashboard/recruiters', DashboardRecruitersController::class)->name('dashRecruiters.index');
+        /*
+         * QCM Management
+         */
+        Route::get('/recruiters/qcm/', [QCMController::class,'index'])->name('qcm.index');
     });
 });

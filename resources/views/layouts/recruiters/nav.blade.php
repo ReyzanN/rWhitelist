@@ -8,7 +8,7 @@
             <p class="text-uppercase text-light text-opacity-75 text-center">Gestion whitelist</p>
             <ul class="text-center poppins">
                 <li class="list-group-item">
-                    <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-patch-question"></i>&nbsp;Gestion QCM</a>
+                    <a href="{{ route('qcm.index') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-patch-question"></i>&nbsp;Gestion QCM</a>
                 </li>
                 <li class="list-group-item mt-2">
                     <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-clock"></i>&nbsp;Gesiton Sessions</a>
