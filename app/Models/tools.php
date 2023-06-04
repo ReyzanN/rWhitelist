@@ -12,12 +12,4 @@ trait tools
             return $TempDate->format('d/m/y - H:i');
         }
     }
-
-    public function isExist(){
-        try {
-            $this->getMorphClass();
-            dd($this->getMorphClass());
-        }catch (\Exception $e){
-        }
-    }
 }
