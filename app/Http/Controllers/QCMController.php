@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QuestionTypeRequest;
 use App\Models\QuestionType;
+use http\Exception\BadConversionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -14,7 +15,7 @@ class QCMController extends Controller
     }
 
     public function index(){
-        return view('recruiters.qcm.index', ['QuestionType' => QuestionType::getActiveTypes()]);
+        return view('recruiters.qcm.index', ['QuestionType' => QuestionType::all()]);
     }
 
     /*
@@ -35,9 +36,6 @@ class QCMController extends Controller
         return redirect()->back();
     }
 
-    /*
-     * public function removeQuestionType
-     */
     public function removeQuestionType($QuestionTypeId){
         $Check = $this->Exist(QuestionType::class,$QuestionTypeId);
         if (!$Check){
@@ -50,5 +48,36 @@ class QCMController extends Controller
             Session::flash('Failure', 'Une erreur est survenue');
         }
         return redirect()->back();
+    }
+
+    public function updateQuestionType(QuestionTypeRequest $request){
+        if ($request->validated()){
+            $QT = QuestionType::find($request->only('id')['id']);
+            if(!$QT){
+                abort(404);
+            }
+            try {
+                $QT->update([
+                    'title' => $request->only('label')['label'],
+                    'active' =>  $request->only('active')['active']
+                ]);
+                Session::flash('Success','Modification réalisée avec succès');
+            }catch (\Exception $e){
+                dd($e);
+                Session::flash('Failure','Une erreur est survenue');
+            }
+        }
+        return back();
+    }
+
+    /*
+     * AJAX
+     */
+    public function SearchQuestionTypeID(Request $request){
+        $Check = $this->Exist(QuestionType::class,$request->only('data')['data']);
+        if (!$Check){
+            abort(404);
+        }
+        return view('recruiters.qcm.modalUpdateType',['QT' => $Check]);
     }
 }

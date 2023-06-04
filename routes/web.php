@@ -47,5 +47,11 @@ Route::middleware(['auth'])->group(function(){
              */
             Route::post('/recruiters/qcm/question/add', [QCMController::class, 'addQuestionType'])->name('qcm.question.add');
             Route::get('/recruiters/qcm/question/remove/{QuestionTypeId}', [QCMController::class, 'removeQuestionType'])->name('qcm.question.remove');
+            Route::post('/recruiters/qcm/question/update', [QCMController::class, 'updateQuestionType'])->name('qcm.question.update');
+
+            /*
+             * API - AJAX
+             */
+            Route::post('/recruiters/qcm/question/update/ajax', [QCMController::class, 'SearchQuestionTypeID'])->name('qcm.question.ajax.update');
     });
 });

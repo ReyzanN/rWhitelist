@@ -95,7 +95,7 @@
                                 <td>{{ $QT->parseDateToString($QT->created_at) }}</td>
                                 <td>{{ $QT->parseDateToString($QT->updated_at) }}</td>
                                 <td>
-                                    <button class="btn btn-primary bgPurpleButton"><i class="bi bi-pencil"></i></button>
+                                    <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#editType" onclick="SearchAjax('{{ $QT->id }}','{{ route('qcm.question.ajax.update') }}','TypeQuestionUpdate','{{ csrf_token() }}')"><i class="bi bi-pencil"></i></button>
                                     <a href="{{ route('qcm.question.remove', $QT->id) }}"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button></a>
                                 </td>
                             </tr>
@@ -140,4 +140,26 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Type Modal -->
+    <div class="modal fade" id="editType" tabindex="-1" aria-labelledby="editType" aria-hidden="true">
+        <div class="modal-dialog poppins">
+            <div class="modal-content bg-black text-white">
+                <div class="modal-header text-white">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Éditer un type</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-white" id="TypeQuestionUpdate">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#typeQuestionQCM">Retour</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    <script src="/js/ajax/search.js"></script>
 @endsection
