@@ -20,4 +20,15 @@ class Controller extends BaseController
     {
         Session::flash('Success',$Message);
     }
+
+    /*
+     * Tools
+     */
+    public function Exist($ClassName,$Id){
+        $Temp = $ClassName::find($Id);
+        if ($Temp){
+            return $Temp;
+        }
+        return false;
+    }
 }

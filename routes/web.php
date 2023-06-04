@@ -42,5 +42,10 @@ Route::middleware(['auth'])->group(function(){
          * QCM Management
          */
         Route::get('/recruiters/qcm/', [QCMController::class,'index'])->name('qcm.index');
+            /*
+             * Question Type QCM
+             */
+            Route::post('/recruiters/qcm/question/add', [QCMController::class, 'addQuestionType'])->name('qcm.question.add');
+            Route::get('/recruiters/qcm/question/remove/{QuestionTypeId}', [QCMController::class, 'removeQuestionType'])->name('qcm.question.remove');
     });
 });

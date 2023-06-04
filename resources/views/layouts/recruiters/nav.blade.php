@@ -8,7 +8,7 @@
             <p class="text-uppercase text-light text-opacity-75 text-center">Gestion whitelist</p>
             <ul class="text-center poppins">
                 <li class="list-group-item">
-                    <a href="{{ route('qcm.index') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-patch-question"></i>&nbsp;Gestion QCM</a>
+                    <a href="{{ route('qcm.index') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-patch-question"></i>&nbsp;Gestion QCM - Question</a>
                 </li>
                 <li class="list-group-item mt-2">
                     <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-clock"></i>&nbsp;Gesiton Sessions</a>
@@ -26,6 +26,20 @@
                 </li>
                 <li class="list-group-item mt-2">
                     <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-person-slash"></i>&nbsp;Liste des bannis</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row mt-2 mb-2"></div>
+
+        <div class="row">
+            <p class="text-uppercase text-light text-opacity-75 text-center">Gestion parrainages</p>
+            <ul class="text-center poppins">
+                <li class="list-group-item">
+                    <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-people"></i>&nbsp;Voirs les demandes</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-people"></i>&nbsp;Gestions parrainages</a>
                 </li>
             </ul>
         </div>
