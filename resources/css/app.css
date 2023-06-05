@@ -121,6 +121,18 @@ Tools
     background-color: #181818 !important;
 }
 
+#QuestionList_wrapper select {
+    color: white !important;
+}
+
+#QuestionList_wrapper option {
+    color: black !important;
+}
+
+#QuestionList_filter input {
+    color: white;
+}
+
 
 /*
 Public/auth/index

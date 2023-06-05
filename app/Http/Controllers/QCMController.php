@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuestionFirstChanceRequest;
 use App\Http\Requests\QuestionTypeRequest;
+use App\Models\QuestionFirstChance;
 use App\Models\QuestionType;
 use http\Exception\BadConversionException;
 use Illuminate\Http\Request;
@@ -15,7 +17,8 @@ class QCMController extends Controller
     }
 
     public function index(){
-        return view('recruiters.qcm.index', ['QuestionType' => QuestionType::all()]);
+        $Question = QuestionFirstChance::all();
+        return view('recruiters.qcm.index', ['QuestionType' => QuestionType::all(),'QuestionTypeActive' => QuestionType::getActiveTypes(),'Question' => $Question]);
     }
 
     /*
@@ -63,11 +66,45 @@ class QCMController extends Controller
                 ]);
                 Session::flash('Success','Modification réalisée avec succès');
             }catch (\Exception $e){
-                dd($e);
                 Session::flash('Failure','Une erreur est survenue');
             }
         }
         return back();
+    }
+
+    /*
+     * Question First Chance
+     */
+    public function addQuestionFirstChance(QuestionFirstChanceRequest $request){
+        if ($request->validated()){
+            try {
+                QuestionFirstChance::create([
+                    'question' => $request->only('question')['question'],
+                    'answer' => $request->only('answer')['answer'],
+                    'idTypeQuestion' => $request->only('idTypeQuestion')['idTypeQuestion'],
+                    'active' => 1
+                ]);
+                Session::flash('Success', 'Ajout de question réussi');
+            }catch (\Exception $e){
+                // Silence is golden
+                Session::flash('Failure', 'Une erreur est survenue');
+            }
+        }
+        return redirect()->back();
+    }
+
+    public function removeQuestionFirstChance($QuestionId){
+        $Check = $this->Exist(QuestionFirstChance::class,$QuestionId);
+        if (!$Check){
+            abort(404);
+        }
+        try {
+            $Check->delete();
+            Session::flash('Success','Suppression de question réussi');
+        }catch (\Exception $e){
+            Session::flash('Failure', 'Une erreur est survenue');
+        }
+        return redirect()->back();
     }
 
     /*

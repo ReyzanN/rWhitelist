@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuestionFirstChance extends Model
 {
-    use HasFactory;
+    use HasFactory, tools;
 
     protected $table = "question_first_chance";
 

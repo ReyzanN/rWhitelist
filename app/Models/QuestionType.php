@@ -17,6 +17,13 @@ class QuestionType extends Model
     ];
 
     /*
+     * Question First Type Link
+     */
+    public function getQuestionFirstChance(){
+        return $this->hasMany(QuestionFirstChance::class,'idTypeQuestion','id')->get();
+    }
+
+    /*
      * functions
      */
     public static function getActiveTypes(){

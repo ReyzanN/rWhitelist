@@ -12,17 +12,20 @@
                         <h1 class="mt-2">Gestion des QCM - Question</h1>
                     </div>
                     <div class="row d-flex">
-                        <p><span class="badge text-bg-light">Nombre de question en ligne : 100</span></p>
-                        <p><span class="badge text-bg-light">Nombre de question par QCM : {{ env('APP_WHITELIST_QCM_QUESTION') }}</span></p>
+                        <div class="d-flex flex-row justify-content-around align-items-center">
+                            <p><span class="badge text-bg-light">Nombre de question en ligne : 100</span></p>
+                            <p><span class="badge text-bg-light">Nombre de question par QCM : {{ env('APP_WHITELIST_QCM_QUESTION') }}</span></p>
+                            <p><span class="badge text-bg-light">Nombre chance par candidat : {{ env('APP_WHITELIST_QCM_ATTEMPT') }}</span></p>
+                        </div>
                         <div class="mb-2">
-                            <button class="btn btn-primary bgPurpleButton"><i class="bi bi-plus-circle"></i>&nbsp;Ajouter une nouvelle question</button>
+                            <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#QFTadd"><i class="bi bi-plus-circle"></i>&nbsp;Ajouter une nouvelle question</button>
                             <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#typeQuestionQCM"><i class="bi bi-eye"></i>&nbsp;Voirs les thèmes de questions</button>
                         </div>
                         <hr class="mx-2 w-25">
                     </div>
                     <div class="row mt-2">
-                        <div class="col-12 d-flex justify-content-center align-items-center">
-                            <table class="table text-white">
+                        <div class="col-12">
+                            <table class="table text-white" id="QuestionList">
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -35,19 +38,27 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>C'est quoi le LSPD ?</td>
-                                    <td>Légal</td>
-                                    <td><span class="badge text-bg-success">En ligne</span></td>
-                                    <td>12/04/2023 - 15H50</td>
-                                    <td>12/04/2023 - 15H50</td>
-                                    <td>
-                                        <button class="btn btn-primary bgPurpleButton"><i class="bi bi-eye"></i></button>
-                                        <button class="btn btn-primary bgPurpleButton"><i class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
+                                @foreach($Question as $Q)
+                                    <tr>
+                                        <th scope="row">{{ $Q->id }}</th>
+                                        <td>{{ $Q->question }}</td>
+                                        <td>{{ $Q->QuestionType()->title }}</td>
+                                        <td>
+                                            @if($Q->active)
+                                                <span class="badge text-bg-success">En ligne</span>
+                                            @else
+                                                <span class="badge text-bg-danger">Hors ligne</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $Q->parseDateToString($Q->created_at) }}</td>
+                                        <td>{{ $Q->parseDateToString($Q->created_at) }}</td>
+                                        <td>
+                                            <button class="btn btn-primary bgPurpleButton"><i class="bi bi-eye"></i></button>
+                                            <button class="btn btn-primary bgPurpleButton"><i class="bi bi-pencil"></i></button>
+                                            <a href="{{ route('qcm.questionFirstChance.remove',$Q->id) }}" ><button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -95,8 +106,8 @@
                                 <td>{{ $QT->parseDateToString($QT->created_at) }}</td>
                                 <td>{{ $QT->parseDateToString($QT->updated_at) }}</td>
                                 <td>
-                                    <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#editType" onclick="SearchAjax('{{ $QT->id }}','{{ route('qcm.question.ajax.update') }}','TypeQuestionUpdate','{{ csrf_token() }}')"><i class="bi bi-pencil"></i></button>
-                                    <a href="{{ route('qcm.question.remove', $QT->id) }}"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button></a>
+                                    <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#editType" onclick="SearchAjax('{{ $QT->id }}','{{ route('qcm.questionType.ajax.update') }}','TypeQuestionUpdate','{{ csrf_token() }}')"><i class="bi bi-pencil"></i></button>
+                                    <a href="{{ route('qcm.questionType.remove', $QT->id) }}"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -119,7 +130,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-white">
-                    <form method="post" action="{{ route('qcm.question.add') }}">
+                    <form method="post" action="{{ route('qcm.questionType.add') }}">
                         @csrf
                         <div class="row text-black">
                             <div class="mb-3 col-12">
@@ -136,6 +147,63 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#typeQuestionQCM">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Question First Chance -->
+    <div class="modal fade" id="QFTadd" tabindex="-1" aria-labelledby="QFTadd" aria-hidden="true">
+        <div class="modal-dialog poppins">
+            <div class="modal-content bg-black text-white">
+                <div class="modal-header text-white">
+                    <h1 class="modal-title fs-5" id="QFTadd">Ajouter une question</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-white">
+                    <form method="post" action="{{ route('qcm.questionFirstChance.add') }}">
+                        @csrf
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="alert alert-secondary" role="alert">
+                                    La limite de caractère de la réponse type est fixée à 1000 caractères. Par défaut, elle sera activée pour être présenté aux candidats. La selection d'un thème pour la question est obligatoire.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-black">
+                            <div class="mb-3 col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="question" name="question" placeholder="Type">
+                                    <label for="question">Question</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-black">
+                            <div class="mb-3 col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Entrez la réponse" id="answer" name="answer" style="height: 130px" maxlength="1000"></textarea>
+                                    <label for="answer">Réponse Type</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-black">
+                            <div class="mb-3 col-12">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select"  name="idTypeQuestion" id="idTypeQuestion" aria-label="Default select example">
+                                        @foreach($QuestionTypeActive as $QTA)
+                                            <option value="{{ $QTA->id }}">{{ $QTA->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <button type="submit" class="btn btn-success w-75">Sauvegarder</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 </div>
             </div>
         </div>

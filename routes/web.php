@@ -45,13 +45,18 @@ Route::middleware(['auth'])->group(function(){
             /*
              * Question Type QCM
              */
-            Route::post('/recruiters/qcm/question/add', [QCMController::class, 'addQuestionType'])->name('qcm.question.add');
-            Route::get('/recruiters/qcm/question/remove/{QuestionTypeId}', [QCMController::class, 'removeQuestionType'])->name('qcm.question.remove');
-            Route::post('/recruiters/qcm/question/update', [QCMController::class, 'updateQuestionType'])->name('qcm.question.update');
+            Route::post('/recruiters/qcm/question/add', [QCMController::class, 'addQuestionType'])->name('qcm.questionType.add');
+            Route::get('/recruiters/qcm/question/remove/{QuestionTypeId}', [QCMController::class, 'removeQuestionType'])->name('qcm.questionType.remove');
+            Route::post('/recruiters/qcm/question/update', [QCMController::class, 'updateQuestionType'])->name('qcm.questionType.update');
+            /*
+             * Question First Chance
+             */
+            Route::post('/recruiters/qcm/question/firstChance/add',[QCMController::class, 'addQuestionFirstChance'])->name('qcm.questionFirstChance.add');
+            Route::get('/recruiters/qcm/question/firstChance/remove/{QuestionID}', [QCMController::class, 'removeQuestionFirstChance'])->name('qcm.questionFirstChance.remove');
 
             /*
              * API - AJAX
              */
-            Route::post('/recruiters/qcm/question/update/ajax', [QCMController::class, 'SearchQuestionTypeID'])->name('qcm.question.ajax.update');
+            Route::post('/recruiters/qcm/question/update/ajax', [QCMController::class, 'SearchQuestionTypeID'])->name('qcm.questionType.ajax.update');
     });
 });

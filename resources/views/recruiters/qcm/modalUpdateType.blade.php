@@ -1,4 +1,4 @@
-<form method="post" action="{{ route('qcm.question.update') }}">
+<form method="post" action="{{ route('qcm.questionType.update') }}">
     @csrf
     <input type="hidden" name="id" id="id" value="{{ $QT->id }}">
     <div class="row text-black">
