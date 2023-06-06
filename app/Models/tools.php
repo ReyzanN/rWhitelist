@@ -12,4 +12,16 @@ trait tools
             return $TempDate->format('d/m/y - H:i');
         }
     }
+
+    public function isSelected($IdToCheck) :bool|null {
+        if ($this->id == $IdToCheck){ return "selected";}
+        return "";
+    }
+
+    public function isActive():string {
+        if ($this->active){
+            return "selected";
+        }
+        return "";
+    }
 }

@@ -24,4 +24,11 @@ class QuestionFirstChance extends Model
     public function QuestionType(){
         return $this->hasOne(QuestionType::class,'id','idTypeQuestion')->get()->first();
     }
+
+    /*
+     * Functions
+     */
+    public static function getActiveQuestions(){
+        return QuestionFirstChance::where(['active' => 1])->get();
+    }
 }

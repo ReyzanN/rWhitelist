@@ -18,7 +18,8 @@ class QCMController extends Controller
 
     public function index(){
         $Question = QuestionFirstChance::all();
-        return view('recruiters.qcm.index', ['QuestionType' => QuestionType::all(),'QuestionTypeActive' => QuestionType::getActiveTypes(),'Question' => $Question]);
+        $QuestionCount = count(QuestionFirstChance::getActiveQuestions());
+        return view('recruiters.qcm.index', ['QuestionType' => QuestionType::all(),'QuestionTypeActive' => QuestionType::getActiveTypes(),'Question' => $Question, 'QuestionCount' => $QuestionCount]);
     }
 
     /*
@@ -107,14 +108,44 @@ class QCMController extends Controller
         return redirect()->back();
     }
 
+    public function updateQuestionFirstChance(QuestionFirstChanceRequest $request){
+        if ($request->validated()){
+            $Question = QuestionFirstChance::find($request->only(['id']))->first();
+            if (!$Question) {
+                abort(404);
+            }
+            try {
+                $Question->update([
+                    'question' => $request->only('question')['question'],
+                    'answer' => $request->only('answer')['answer'],
+                    'idTypeQuestion' => $request->only('idTypeQuestion')['idTypeQuestion'],
+                    'active' => $request->only('active')['active']
+                ]);
+                Session::flash('Success','Modification réalisée avec succès');
+            }catch (\Exception $e){
+                // Silence is golden
+                Session::flash('Failure','Une erreur est survenue');
+            }
+        }
+        return back();
+    }
+
     /*
      * AJAX
      */
     public function SearchQuestionTypeID(Request $request){
         $Check = $this->Exist(QuestionType::class,$request->only('data')['data']);
-        if (!$Check){
+        if (!$Check) {
             abort(404);
         }
         return view('recruiters.qcm.modalUpdateType',['QT' => $Check]);
+    }
+
+    public function SearchQuestionFirstChanceID(Request $request){
+        $Check = $this->Exist(QuestionFirstChance::class,$request->only('data')['data']);
+        if (!$Check) {
+            abort(404);
+        }
+        return view('recruiters.qcm.modalUpdateQuestionFirstChance',['Q' => $Check,'QuestionTypeActive' => QuestionType::getActiveTypes()]);
     }
 }

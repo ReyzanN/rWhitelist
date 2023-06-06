@@ -13,7 +13,7 @@
                     </div>
                     <div class="row d-flex">
                         <div class="d-flex flex-row justify-content-around align-items-center">
-                            <p><span class="badge text-bg-light">Nombre de question en ligne : 100</span></p>
+                            <p><span class="badge text-bg-light">Nombre de question en ligne : {{ $QuestionCount }}</span></p>
                             <p><span class="badge text-bg-light">Nombre de question par QCM : {{ env('APP_WHITELIST_QCM_QUESTION') }}</span></p>
                             <p><span class="badge text-bg-light">Nombre chance par candidat : {{ env('APP_WHITELIST_QCM_ATTEMPT') }}</span></p>
                         </div>
@@ -51,10 +51,9 @@
                                             @endif
                                         </td>
                                         <td>{{ $Q->parseDateToString($Q->created_at) }}</td>
-                                        <td>{{ $Q->parseDateToString($Q->created_at) }}</td>
+                                        <td>{{ $Q->parseDateToString($Q->updated_at) }}</td>
                                         <td>
-                                            <button class="btn btn-primary bgPurpleButton"><i class="bi bi-eye"></i></button>
-                                            <button class="btn btn-primary bgPurpleButton"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn btn-primary bgPurpleButton" onclick="SearchAjax('{{ $Q->id }}','{{ route('qcm.questionFirstChance.ajax.update') }}','QFTUpdateModal','{{ csrf_token() }}')" data-bs-toggle="modal" data-bs-target="#QFTUpdate"><i class="bi bi-eye"></i></button>
                                             <a href="{{ route('qcm.questionFirstChance.remove',$Q->id) }}" ><button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button></a>
                                         </td>
                                     </tr>
@@ -226,8 +225,44 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit QuestionFirst Chance -->
+    <div class="modal fade" id="QFTUpdate" tabindex="-1" aria-labelledby="QFTUpdate" aria-hidden="true">
+        <div class="modal-dialog poppins">
+            <div class="modal-content bg-black text-white">
+                <div id="QFTUpdateModal">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script src="/js/ajax/search.js"></script>
+    <script>
+        function myFunction(){
+            let ButtonUpdateTrigger = document.getElementById('ButtonUpdateFirstChance');
+            let ButtonUpdate = document.getElementById('ButtonUpdateFirstChanceConfirm');
+            ButtonUpdateTrigger.addEventListener('click', HandlerEventClick(ButtonUpdateTrigger,ButtonUpdate),false)
+        }
+        /* --- */
+        function HandlerEventClick(Target,TargetTwo,Break){
+            if (Break) { return; }
+            TargetTwo.disabled = false
+            Target.disabled = true
+            /* - Remove ReadOnly - */
+            document.getElementById('questionUpdate').removeAttribute('readonly')
+            document.getElementById('answerUpdate').removeAttribute('readonly')
+            document.getElementById('idTypeQuestionUpdate').removeAttribute('disabled')
+            document.getElementById('activeUpdate').removeAttribute('disabled')
+            RemoveEventHandler(Target)
+        }
+        /* --- */
+        function RemoveEventHandler(Target,TargetTwo){
+            Target.removeEventListener('click',HandlerEventClick(Target,TargetTwo,true))
+        }
+    </script>
 @endsection
