@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function(){
          * Ajax
          */
         Route::post('/qcm/candidate/apply/ajax', [QCMCandidateController::class,'GetQCM'])->name('qcm.candidate.getQCM.ajax');
-        Route::post('/qcm/candidate/continu/', [QCMCandidateController::class,'ContinueQCM'])->name('qcm.candidate.continue.ajax');
+        Route::post('/qcm/candidate/continue/', [QCMCandidateController::class,'ContinueQCM'])->name('qcm.candidate.continue.ajax');
 
     /*
      * Recruiters Route
@@ -69,7 +69,7 @@ Route::middleware(['auth'])->group(function(){
             Route::post('/recruiters/qcm/question/firstChance/update', [QCMController::class, 'updateQuestionFirstChance'])->name('qcm.questionFirstChance.update');
 
             /*
-             * API - AJAX
+             * Ajax
              */
             Route::post('/recruiters/qcm/question/type/update/ajax', [QCMController::class, 'SearchQuestionTypeID'])->name('qcm.questionType.ajax.update');
             Route::post('/recruiters/qcm/question/update/ajax', [QCMController::class, 'SearchQuestionFirstChanceID'])->name('qcm.questionFirstChance.ajax.update');

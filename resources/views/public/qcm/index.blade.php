@@ -33,7 +33,6 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Type</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Corrigé</th>
                                     <th scope="col">Note</th>
@@ -45,7 +44,6 @@
                                 @foreach($OldQCM as $OQ)
                                     <tr>
                                         <th scope="row">{{ $OQ->id }}</th>
-                                        <th scope="row"><span class="badge rounded-pill text-bg-secondary">Normal / Seconde Chance</span></th>
                                         <td>
                                             @if(!$OQ->active)
                                                 <span class="badge rounded-pill text-bg-success">Envoyé</span>
