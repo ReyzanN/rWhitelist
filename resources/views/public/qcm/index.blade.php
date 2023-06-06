@@ -17,7 +17,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <p class="text-center">Le questionnaire Classic n’est validé seulement qu’en obtenant un ratio de {{ env('APP_WHITELIST_QCM_SCORE_MINI') }} réponses correctes sur l’ensemble de celui-ci. Si il est échoué vous avez la possibilité de le repasser jusqu'à {{ env('APP_WHITELIST_QCM_ATTEMPT') }} fois maximum.</p>
+                        <p class="text-center">Le questionnaire Classic n’est validé seulement qu’en obtenant un ratio de {{ env('APP_WHITELIST_QCM_SCORE_MINI') }} réponses correctes sur l’ensemble de celui-ci. Si il est échoué vous avez la possibilité de le repasser jusqu'à {{ env('APP_WHITELIST_QCM_ATTEMPT') }} fois maximum.
+                        Pour recommencer, vous devez attendre que le premier questionnaire soit corrigé.
+                        </p>
                         <div class="d-flex justify-content-center align-items-center">
                             <button class="btn btn-primary text-uppercase bgPurpleButton" @if(!$CanDoQCM) disabled @endif data-bs-toggle="modal" data-bs-target="#QCM" onclick="SearchAjax('','{{ route('qcm.candidate.getQCM.ajax') }}','QCMModalCandidate','{{ csrf_token() }}')">commencer !</button>
                         </div>
