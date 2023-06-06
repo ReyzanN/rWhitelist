@@ -40,6 +40,7 @@
                                     <th scope="col">Note</th>
                                     <th scope="col">Fait le</th>
                                     <th scope="col">Reprendre</th>
+                                    <th scope="col">Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -62,7 +63,7 @@
                                         </td>
                                         <td>
                                             @if($OQ->graded)
-                                                {{ $QO->GetNoteForQCM() }} / {{ env('APP_WHITELIST_QCM_QUESTION') }}
+                                                {{ $OQ->GetNoteForQCM() }} / {{ env('APP_WHITELIST_QCM_QUESTION') }}
                                             @else
                                                 <span class="badge rounded-pill text-bg-secondary">Non corrigé</span>
                                             @endif
@@ -73,6 +74,13 @@
                                                 <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#QCM" onclick="SearchAjax('{{ $OQ->id  }}','{{ route('qcm.candidate.continue.ajax') }}','QCMModalCandidate','{{ csrf_token() }}')"><i class="bi bi-eye"></i></button>
                                             @else
                                                 <span class="badge rounded-pill text-bg-success">Envoyé</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if(env('APP_WHITELIST_QCM_SCORE_MINI') <= $OQ->GetNoteForQCM())
+                                                <span class="badge rounded-pill text-bg-success">Validé</span>
+                                            @else
+                                                <span class="badge rounded-pill text-bg-danger">Refusé</span>
                                             @endif
                                         </td>
                                     </tr>

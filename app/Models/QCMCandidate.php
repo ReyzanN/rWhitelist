@@ -28,11 +28,11 @@ class QCMCandidate extends Model
     }
 
     public static function GetActiveQCMForAuthUser(){
-        return QCMCandidate::where(['idUser' => auth()->user()->id])->get()->first();
+        return QCMCandidate::where(['idUser' => auth()->user()->id, 'active' => 1])->get()->first();
     }
 
     public static function GetQCMNotActiveNotMarkedForAuthUser(){
-        return QCMCandidate::where(['idUser' => auth()->user()->id,'graded' => 1])->get();
+        return QCMCandidate::where(['idUser' => auth()->user()->id,'graded' => 0])->get();
     }
 
     /*

@@ -153,7 +153,7 @@ class User extends Authenticatable
      */
     public function CanApplyForQCM(): bool
     {
-        if (QCMCandidate::GetActiveQCMForAuthUser()) { return false;}
+        if (QCMCandidate::GetActiveQCMForAuthUser() !== null) { return false; }
         if (count(QCMCandidate::GetQCMNotActiveNotMarkedForAuthUser()) > 0) { return false;}
         if (auth()->user()->qcm) { return false; }
         $CountChance = count($this->QCMApplication());
