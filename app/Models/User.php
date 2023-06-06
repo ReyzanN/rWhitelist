@@ -44,9 +44,17 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /*
+     * References
+     */
+
     public function userRank(): \Illuminate\Database\Eloquent\Collection
     {
         return $this->hasMany(UserRank::class,'userId', 'id')->get();
+    }
+
+    public function QCMApplication(){
+        return $this->hasMany(QCMCandidate::class,'idUser','id')->get();
     }
 
     /* --- */
@@ -138,6 +146,28 @@ class User extends Authenticatable
             }
         }
         return false;
+    }
+
+    /*
+     * QCM Apply
+     */
+    public function CanApplyForQCM(): bool
+    {
+        $CountChance = count($this->QCMApplication());
+        if ($CountChance >= env('APP_WHITELIST_QCM_ATTEMPT')) { return false;};
+        return true;
+    }
+
+    public function GetChanceForQCM(): int
+    {
+        return env('APP_WHITELIST_QCM_ATTEMPT') - count($this->QCMApplication());
+    }
+
+    public function GetAttemptForQCM() :int {
+        $Count = count($this->QCMApplication());
+        if ($Count == 0) { return 1;}
+        if ($Count == 1) { return 2;}
+        return 0;
     }
 
 

@@ -20,11 +20,23 @@
                     <div class="row">
                         <div class="row mt-3">
                             <div class="col-9">Questionnaire</div>
-                            <div class="col-3 text-center"><i class="bi bi-check-circle" style="color: green"></i></div>
+                            <div class="col-3 text-center">
+                                @if(auth()->user()->qcm)
+                                    <i class="bi bi-check-circle" style="color: green"></i>
+                                @else
+                                    <i class="bi bi-question-circle" style="color: orange"></i>
+                                @endif
+                            </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-9">Entretient</div>
-                            <div class="col-3 text-center"><i class="bi bi-question-circle" style="color: orange"></i></div>
+                            <div class="col-3 text-center">
+                                @if(auth()->user()->appointment)
+                                    <i class="bi bi-check-circle" style="color: green"></i>
+                                @else
+                                    <i class="bi bi-question-circle" style="color: orange"></i>
+                                @endif
+                            </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-9">Status Whitelist</div>

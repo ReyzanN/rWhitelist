@@ -112,6 +112,10 @@ Tools
     background-color: #646790;
 }
 
+.bgPurpleButton:disabled {
+    background-color: #b56690;
+}
+
 .noStyle {
     text-underline: none !important;
     color: rgba(0, 128, 0, 0);

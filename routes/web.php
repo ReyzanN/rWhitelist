@@ -30,6 +30,16 @@ Route::middleware(['auth'])->group(function(){
     /* Dashboard */
     Route::get('/dashboard', DashboardPublicController::class)->name('dashPublic.index');
 
+
+    /*
+     * Candidate QCM
+     */
+    Route::get('/qcm/candidate',\App\Http\Controllers\QCMCandidateController::class)->name('qcm.candidate.index');
+        /*
+         * Ajax
+         */
+        Route::post('/qcm/candidate/apply/ajax', [\App\Http\Controllers\QCMCandidateController::class,'GetQCM'])->name('qcm.candidate.getQCM.ajax');
+
     /*
      * Recruiters Route
      */
