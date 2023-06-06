@@ -6,6 +6,7 @@
     </div>
 </div>
 <form>
+    <input type="hidden" name="QCMId" value="{{ $QCMId }}">
     @csrf
     @foreach($QuestionsList as $QL)
         <div class="d-flex justify-content-center align-items-center">
@@ -22,7 +23,7 @@
         <div class="row text-black">
             <div class="mb-3 col-12">
                 <div class="form-floating">
-                    <textarea class="form-control" placeholder="Entrez la réponse" id="answerUpdate" name="answer" style="height: 130px" maxlength="1000"></textarea>
+                    <textarea class="form-control" placeholder="Entrez la réponse" id="answerUpdate" name="answer[{{ $QL->id }}]" style="height: 130px" maxlength="1000"></textarea>
                     <label for="answer">Votre Réponse</label>
                 </div>
             </div>

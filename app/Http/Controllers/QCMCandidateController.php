@@ -36,6 +36,7 @@ class QCMCandidateController extends Controller
             return view('public.qcm.errorPage',['Error' => $Message]);
         }
         $QuestionsList = QCMCandidate::createQCMForCandidate();
-        return view('public.qcm.ajaxModalContentQCM',['QuestionsList' => $QuestionsList]);
+        $QCMId = $QuestionsList[0]->idQCMCandidate;
+        return view('public.qcm.ajaxModalContentQCM',['QuestionsList' => $QuestionsList, 'QCMId' => $QCMId]);
     }
 }

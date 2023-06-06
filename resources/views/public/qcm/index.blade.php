@@ -75,7 +75,7 @@
     <script src="/js/ajax/Search.js"></script>
     <script>
         function blank(){
-            //location.reload()
+            location.reload()
         }
     </script>
 @endsection
