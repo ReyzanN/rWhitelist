@@ -22,6 +22,65 @@
                             <button class="btn btn-primary text-uppercase bgPurpleButton" @if(!$CanDoQCM) disabled @endif data-bs-toggle="modal" data-bs-target="#QCM" onclick="SearchAjax('','{{ route('qcm.candidate.getQCM.ajax') }}','QCMModalCandidate','{{ csrf_token() }}')">commencer !</button>
                         </div>
                     </div>
+                    <div class="row mt-5 mb-2 d-flex justify-content-center align-items-center">
+                        <hr class="w-25">
+                    </div>
+                    <div class="row">
+                        <h3>Mes QCM</h3>
+                        <hr class="w-25 mx-2">
+                        <div class="col-12 text-white">
+                            <table class="table text-white">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Corrigé</th>
+                                    <th scope="col">Note</th>
+                                    <th scope="col">Fait le</th>
+                                    <th scope="col">Reprendre</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($OldQCM as $OQ)
+                                    <tr>
+                                        <th scope="row">{{ $OQ->id }}</th>
+                                        <th scope="row"><span class="badge rounded-pill text-bg-secondary">Normal / Seconde Chance</span></th>
+                                        <td>
+                                            @if(!$OQ->active)
+                                                <span class="badge rounded-pill text-bg-success">Envoyé</span>
+                                            @else
+                                                <span class="badge rounded-pill text-bg-danger">Non terminé</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if(!$OQ->graded)
+                                                <span class="badge rounded-pill text-bg-warning">Non corrigé</span>
+                                            @else
+                                                <span class="badge rounded-pill text-bg-success">Corrigé</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($OQ->graded)
+                                                {{ $QO->GetNoteForQCM() }} / {{ env('APP_WHITELIST_QCM_QUESTION') }}
+                                            @else
+                                                <span class="badge rounded-pill text-bg-secondary">Non corrigé</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $OQ->parseDateToString($OQ->created_at) }}</td>
+                                        <td>
+                                            @if($OQ->active)
+                                                <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#QCM" onclick="SearchAjax('{{ $OQ->id  }}','{{ route('qcm.candidate.continue.ajax') }}','QCMModalCandidate','{{ csrf_token() }}')"><i class="bi bi-eye"></i></button>
+                                            @else
+                                                <span class="badge rounded-pill text-bg-success">Envoyé</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -39,7 +98,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="QCMModalCandidate">
-                    ///
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#QCMConfirm">Quitter</button>
@@ -65,6 +126,28 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="blank()">Oui je pars !</button>
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#QCM">Non je finis !</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal View -->
+    <div class="modal fade" id="QCMView" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="QCMView" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-black text-white poppins">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="QCMView">
+                        Question de : {{ auth()->user()->discordUserName }}
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="QCMModalCandidateView">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>

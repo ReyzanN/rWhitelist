@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QCMCandidateValidateRequest;
 use App\Models\QCMCandidate;
 use App\Models\QCMCandidateAnswer;
 use App\Models\QuestionFirstChance;
 use http\Exception\BadConversionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Termwind\Components\Ol;
 
 class QCMCandidateController extends Controller
 {
@@ -16,15 +18,34 @@ class QCMCandidateController extends Controller
     }
 
     public function __invoke(){
-        if (auth()->user()->qcm == 1){
-            Session::flash('Failure','Vous avez déjà réussi le QCM !');
-            return redirect()->back();
-        }
         $CanDoQCM = auth()->user()->CanApplyForQCM();
         $Chance = auth()->user()->GetChanceForQCM();
         $Attempt = auth()->user()->GetAttemptForQCM();
+        $OldQCMForCandidate = QCMCandidate::where(['idUser' => auth()->user()->id])->get();
+        return view('public.qcm.index',['CanDoQCM' => $CanDoQCM,'QCMChance' => $Chance,'Attempt' => $Attempt,'OldQCM' => $OldQCMForCandidate]);
+    }
 
-        return view('public.qcm.index',['CanDoQCM' => $CanDoQCM,'QCMChance' => $Chance,'Attempt' => $Attempt]);
+    /*
+     * QCMValidation
+     */
+    public function ValidateQCM(QCMCandidateValidateRequest $request){
+        if ($request->validated()){
+            $CandidateAnswer = $request->only('answer')['answer'];
+            $QCMID = QCMCandidate::GetActiveQCMForAuthUser();
+            if ($QCMID->active) {
+                foreach ($CandidateAnswer as $Key => $Value) {
+                    $TempAnswer = QCMCandidateAnswer::where(['idQCMCandidate' => $QCMID->id, 'id' => $Key])->get()->first();
+                    if ($TempAnswer) {
+                        $TempAnswer->update(['answer' => $Value]);
+                    }
+                }
+                Session::flash('Success', 'Merci les recruteurs vont étudier vos réponses.');
+                $QCMID->update(['active' => 0]);
+                return redirect()->back();
+            }
+            Session::flash('Failure','Vous avez déjà envoyé ce questionnaire');
+            return redirect()->back();
+        }
     }
 
     /*
@@ -36,7 +57,18 @@ class QCMCandidateController extends Controller
             return view('public.qcm.errorPage',['Error' => $Message]);
         }
         $QuestionsList = QCMCandidate::createQCMForCandidate();
-        $QCMId = $QuestionsList[0]->idQCMCandidate;
-        return view('public.qcm.ajaxModalContentQCM',['QuestionsList' => $QuestionsList, 'QCMId' => $QCMId]);
+        $QCM = $QuestionsList[0]->QCMCandidate();
+        return view('public.qcm.ajaxModalContentQCM',['QuestionsList' => $QuestionsList, 'QCM' => $QCM]);
+    }
+
+    public function ContinueQCM(Request $request){
+        $QCM = QCMCandidate::where(['idUser' => auth()->user()->id, 'id' => $request->only('data')['data']])->get()->first();
+        if (!$QCM){
+            return view('public.qcm.errorPage',['Error' => 'Tu n\'as rien à foutre la']);
+        }
+        if (!$QCM->active) { return view('public.qcm.errorPage',['Error' => 'Tu n\'as rien à foutre la']); }
+        $QCMQuestion = $QCM->QCMAnswer();
+        $QCM = $QCMQuestion[0]->QCMCandidate();
+        return view('public.qcm.ajaxModalContentQCM',['QuestionsList' => $QCMQuestion, 'QCM' => $QCM]);
     }
 }

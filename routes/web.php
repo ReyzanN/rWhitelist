@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardPublicController;
 use App\Http\Controllers\DashboardRecruitersController;
 use App\Http\Controllers\HomePublicController;
+use App\Http\Controllers\QCMCandidateController;
 use App\Http\Controllers\QCMController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,11 +35,13 @@ Route::middleware(['auth'])->group(function(){
     /*
      * Candidate QCM
      */
-    Route::get('/qcm/candidate',\App\Http\Controllers\QCMCandidateController::class)->name('qcm.candidate.index');
+    Route::get('/qcm/candidate',QCMCandidateController::class)->name('qcm.candidate.index');
+    Route::post('/qcm/candidate/validate',[QCMCandidateController::class,'ValidateQCM'])->name('qcm.candidate.validate');
         /*
          * Ajax
          */
-        Route::post('/qcm/candidate/apply/ajax', [\App\Http\Controllers\QCMCandidateController::class,'GetQCM'])->name('qcm.candidate.getQCM.ajax');
+        Route::post('/qcm/candidate/apply/ajax', [QCMCandidateController::class,'GetQCM'])->name('qcm.candidate.getQCM.ajax');
+        Route::post('/qcm/candidate/continu/', [QCMCandidateController::class,'ContinueQCM'])->name('qcm.candidate.continue.ajax');
 
     /*
      * Recruiters Route

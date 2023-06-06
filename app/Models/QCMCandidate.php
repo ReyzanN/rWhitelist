@@ -24,7 +24,15 @@ class QCMCandidate extends Model
     }
 
     public function QCMAnswer(){
-        return $this->hasMany(QCMCandidateAnswer::class,'idQCMCandidate','id');
+        return $this->hasMany(QCMCandidateAnswer::class,'idQCMCandidate','id')->get();
+    }
+
+    public static function GetActiveQCMForAuthUser(){
+        return QCMCandidate::where(['idUser' => auth()->user()->id])->get()->first();
+    }
+
+    public static function GetQCMNotActiveNotMarkedForAuthUser(){
+        return QCMCandidate::where(['idUser' => auth()->user()->id,'graded' => 1])->get();
     }
 
     /*
@@ -34,7 +42,7 @@ class QCMCandidate extends Model
         $QCMCandidate = QCMCandidate::create([
             'idUser' => auth()->user()->id,
             'active' => 1,
-            'graded' => 1
+            'graded' => 0
         ]);
         $QCMQuestionList = QuestionFirstChance::getActiveQuestions();
         $CountQuestion = count($QCMQuestionList);
@@ -63,5 +71,10 @@ class QCMCandidate extends Model
             ]);
         }
         return $QCMQuestionForCandidate = QCMCandidateAnswer::where(['idQCMCandidate' => $QCMCandidate->id])->get();
+    }
+
+    public function GetNoteForQCM(): int
+    {
+        Return count(QCMCandidateAnswer::where(['idQCMCandidate' => $this->id, 'status' => 1])->get());
     }
 }
