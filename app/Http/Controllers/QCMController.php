@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QuestionFirstChanceRequest;
 use App\Http\Requests\QuestionTypeRequest;
+use App\Models\QCMCandidate;
+use App\Models\QCMCandidateAnswer;
 use App\Models\QuestionFirstChance;
 use App\Models\QuestionType;
 use http\Exception\BadConversionException;
@@ -147,5 +149,68 @@ class QCMController extends Controller
             abort(404);
         }
         return view('recruiters.qcm.modalUpdateQuestionFirstChance',['Q' => $Check,'QuestionTypeActive' => QuestionType::getActiveTypes()]);
+    }
+
+    /*
+     * QCM First Chance Correction
+     */
+    public function getQCMCorrectionPending(){
+        $QCMPending = QCMCandidate::GetQCMWaitingCorrection();
+        $PendingCount = count($QCMPending);
+        return view('recruiters.qcm.correction', ['QCMCandidate' => $QCMPending,'QCMPendingCount' => $PendingCount]);
+    }
+
+    /*
+     * Ajax
+     */
+    public function SearchToBeginCorrection($IdQCM){
+        $QCM = QCMCandidate::QCMIsPendingAndNotMarked($IdQCM);
+        if ($QCM){
+            return view('recruiters.qcm.correctionForm', ['QCM' => $QCM, 'QuestionsList' => $QCM->QCMAnswer()]);
+        }
+        return redirect()->back();
+    }
+
+    public function UpdateCorrectionQCMCandidate($IdQCM,$QuestionID,$Params){
+        $Question = QCMCandidateAnswer::where(['idQCMCandidate' => $IdQCM, 'id' => $QuestionID])->get()->first();
+        if (!$Question){
+            Session::flash('Failure','Cette question n\'est pas lié à ce candidat');
+        }
+        try {
+            switch ($Params){
+                case 1:
+                    $Question->update(['status' => 1]);
+                    Session::flash('Success','Réponse enregistrée : Vous avez validé sa réponse');
+                    break;
+                case 0:
+                    $Question->update(['status' => 0]);
+                    Session::flash('Success','Réponse enregistrée : Vous avez refusé sa réponse');
+                    break;
+                default:
+                    Session::flash('Failure','Une erreur est survenue');
+                    break;
+            }
+        }catch (\Exception $e){
+            //
+        }
+        return redirect()->back();
+    }
+
+    public function UpdateFinalQCM($IdQCM){
+        $QCM = QCMCandidate::find($IdQCM);
+        if (!$QCM){
+            Session::flash('Failure','Ce questionnaire n\'appartient à personne');
+        }
+        try {
+            $QCM->update(['graded' => 1, 'gradedBy' => auth()->user()->id]);
+            $Grade = $QCM->GetNoteForQCM();
+            if ($Grade >= env('APP_WHITELIST_QCM_SCORE_MINI')){
+                $QCM->user()->update(['qcm' => 1]);
+            }
+            Session::flash('Success','Merci ! C\'est enregistré !');
+        }catch (\Exception $e){
+            //
+        }
+        return redirect()->route('qcm.correction');
     }
 }

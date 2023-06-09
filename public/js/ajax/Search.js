@@ -11,6 +11,5 @@ function SearchAjax(Element,APIUrl,ResultDiv,XCSRFTOKEN){
     XHR.open('POST', APIUrl)
     XHR.setRequestHeader('X-CSRF-TOKEN',XCSRFTOKEN)
     XHR.setRequestHeader('X-Requested-With','XMLHttpRequest')
-    console.log(Element)
     XHR.send(Form)
 }

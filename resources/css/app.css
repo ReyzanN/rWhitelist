@@ -125,16 +125,20 @@ Tools
     background-color: #181818 !important;
 }
 
-#QuestionList_wrapper select {
+#QuestionList_wrapper select, option {
     color: white !important;
-}
-
-#QuestionList_wrapper option {
-    color: black !important;
 }
 
 #QuestionList_filter input {
     color: white;
+}
+
+#QCMPendingList_wrapper select,option {
+    color: white !important;
+}
+
+#QCMPendingList_filter input {
+    color: white !important;
 }
 
 

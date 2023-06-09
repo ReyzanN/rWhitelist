@@ -13,7 +13,9 @@ class QCMCandidate extends Model
 
     protected $fillable = [
         "idUser",
-        "active"
+        "active",
+        "graded",
+        "gradedBy"
     ];
 
     /*
@@ -76,5 +78,13 @@ class QCMCandidate extends Model
     public function GetNoteForQCM(): int
     {
         Return count(QCMCandidateAnswer::where(['idQCMCandidate' => $this->id, 'status' => 1])->get());
+    }
+
+    public static function GetQCMWaitingCorrection(){
+        return QCMCandidate::where(['graded' => 0, 'active' => 0])->orderBy('updated_at')->get();
+    }
+
+    public static function QCMIsPendingAndNotMarked($QCMId){
+        return QCMCandidate::where(['graded' => 0, 'active' => 0, 'id' => $QCMId])->get()->first();
     }
 }

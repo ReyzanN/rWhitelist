@@ -67,6 +67,13 @@ Route::middleware(['auth'])->group(function(){
             Route::post('/recruiters/qcm/question/firstChance/add',[QCMController::class, 'addQuestionFirstChance'])->name('qcm.questionFirstChance.add');
             Route::get('/recruiters/qcm/question/firstChance/remove/{QuestionID}', [QCMController::class, 'removeQuestionFirstChance'])->name('qcm.questionFirstChance.remove');
             Route::post('/recruiters/qcm/question/firstChance/update', [QCMController::class, 'updateQuestionFirstChance'])->name('qcm.questionFirstChance.update');
+            /*
+             * QCM Correction
+             */
+            Route::get('/recruiters/qcm/correction',[QCMController::class, 'getQCMCorrectionPending'])->name('qcm.correction');
+            Route::get('/recruiters/qcm/correction/{QCMId}', [QCMController::class, 'SearchToBeginCorrection'])->name('qcm.beginCorrection');
+            Route::get('/recruiters/qcm/correction/validateQuestion/{IdQCM}/{IdQuestion}/{Params}', [QCMController::class, 'UpdateCorrectionQCMCandidate'])->name('qcm.correction.validateQuestion');
+            Route::get('/recruiters/qcm/correction/validateQuestion/{IdQCM}/', [QCMController::class, 'UpdateFinalQCM'])->name('qcm.correction.validate');
 
             /*
              * Ajax

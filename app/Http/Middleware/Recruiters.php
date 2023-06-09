@@ -22,7 +22,6 @@ class Recruiters
         /*
          * Set Errors Message
          */
-        Session::flash('Failure', 'Hop hop hop reviens là toi !');
-        return redirect()->back();
+        abort(404);
     }
 }
