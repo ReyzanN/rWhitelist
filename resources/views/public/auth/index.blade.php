@@ -20,6 +20,7 @@
 
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col-6 text-center secondSquare text-white d-flex flex-column justify-content-center rounded">
+                @include('layouts.public.errors')
                 <a href="{{ route('auth.login') }}" class="noStyle justify-content-center align-items-center">
                     <button class="btn btn-primary d-flex justify-content-center align-items-center bgPurpleButton txtButtonAuth Nunito400 w-100">
                         <i class="bi bi-discord" style="color: white;font-size: 4rem"></i>&nbsp;connexion

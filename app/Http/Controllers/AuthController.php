@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BanList;
 use App\Models\DiscordAuth;
 use App\Models\User;
 use App\Models\UserRank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use JetBrains\PhpStorm\NoReturn;
 
 class AuthController extends Controller
@@ -29,41 +31,47 @@ class AuthController extends Controller
             'DiscordId' => $DiscordAuth->getDiscordId(),
             'DiscordRole' => $DiscordAuth->getDiscordRoles()
         );
-        if (!User::checkAccount($ClientInfo['DiscordId'])){
-            try {
-                $TempUser = User::create([
-                    'discordAccountId' => $ClientInfo['DiscordId'],
-                    'discordUserName' => $ClientInfo['DiscordUserName'],
-                    'discordEmail' => $ClientInfo['Email'],
-                    'lastConnection' => new \DateTime(),
-                ]);
-                foreach ($ClientInfo['DiscordRole'] as $Role){
-                    UserRank::create([
-                        'userId' => $TempUser->id,
-                        'roleId' => $Role
+        if (!BanList::isBanned($DiscordAuth->getDiscordId())){
+            if (!User::checkAccount($ClientInfo['DiscordId'])){
+                try {
+                    $TempUser = User::create([
+                        'discordAccountId' => $ClientInfo['DiscordId'],
+                        'discordUserName' => $ClientInfo['DiscordUserName'],
+                        'discordEmail' => $ClientInfo['Email'],
+                        'lastConnection' => new \DateTime(),
                     ]);
+                    foreach ($ClientInfo['DiscordRole'] as $Role){
+                        UserRank::create([
+                            'userId' => $TempUser->id,
+                            'roleId' => $Role
+                        ]);
+                    }
+                }catch (\Exception $e){
+                    // Silence is golden
+                }
+            }
+            try {
+                $auth = false;
+                $User = User::findByDiscord($ClientInfo['DiscordId']);
+                if ($User){
+                    Auth::login($User);
+                    session()->regenerate();
+                    $User->updateLastConnection();
+                    $User->updateRole($ClientInfo['DiscordRole']);
+                    $auth = true;
                 }
             }catch (\Exception $e){
-               // Silence is golden
+                dd($e);
+            }
+            if ($auth){
+                // Redirect dashboard
+                auth()->user()->avatar = $ClientInfo['Avatar'];
+                return redirect()->route('dashPublic.index');
             }
         }
-        try {
-            $auth = false;
-            $User = User::findByDiscord($ClientInfo['DiscordId']);
-            if ($User){
-                Auth::login($User);
-                session()->regenerate();
-                $User->updateLastConnection();
-                $User->updateRole($ClientInfo['DiscordRole']);
-                $auth = true;
-            }
-        }catch (\Exception $e){
-            dd($e);
-        }
-        if ($auth){
-            // Redirect dashboard
-            auth()->user()->avatar = $ClientInfo['Avatar'];
-            return redirect()->route('dashPublic.index');
+        $Ban = BanList::GetBannedForUser($DiscordAuth->getDiscordId());
+        if ($Ban){
+            Session::flash('Failure', 'Vous êtes banni pour la raison suivante : '.$Ban->reason);
         }
         // Add error message
         return redirect()->route('base');
