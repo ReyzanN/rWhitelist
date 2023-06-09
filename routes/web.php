@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BanListController;
 use App\Http\Controllers\DashboardPublicController;
 use App\Http\Controllers\DashboardRecruitersController;
 use App\Http\Controllers\HomePublicController;
@@ -80,5 +81,11 @@ Route::middleware(['auth'])->group(function(){
              */
             Route::post('/recruiters/qcm/question/type/update/ajax', [QCMController::class, 'SearchQuestionTypeID'])->name('qcm.questionType.ajax.update');
             Route::post('/recruiters/qcm/question/update/ajax', [QCMController::class, 'SearchQuestionFirstChanceID'])->name('qcm.questionFirstChance.ajax.update');
+
+        /*
+         * Ban List
+         */
+        Route::get('/recruiters/ban/list/view',[BanListController::class, 'DisplayBanList'])->name('recruiters.banlist.view');
+
     });
 });

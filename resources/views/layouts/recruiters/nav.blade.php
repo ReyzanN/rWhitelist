@@ -28,7 +28,7 @@
                     <a href="{{ route('qcm.correction') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-clipboard"></i>&nbsp;Correction QCM</a>
                 </li>
                 <li class="list-group-item mt-2">
-                    <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-person-slash"></i>&nbsp;Liste des bannis</a>
+                    <a href="{{ route('recruiters.banlist.view') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-person-slash"></i>&nbsp;Liste des bannis</a>
                 </li>
             </ul>
         </div>
