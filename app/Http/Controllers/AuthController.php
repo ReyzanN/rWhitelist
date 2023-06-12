@@ -69,7 +69,7 @@ class AuthController extends Controller
                 return redirect()->route('dashPublic.index');
             }
         }
-        $Ban = BanList::GetBannedForUser($DiscordAuth->getDiscordId());
+        $Ban = BanList::GetLastBanForUser($DiscordAuth->getDiscordId());
         if ($Ban){
             Session::flash('Failure', 'Vous êtes banni pour la raison suivante : '.$Ban->reason);
         }

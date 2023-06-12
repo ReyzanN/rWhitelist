@@ -195,17 +195,38 @@
         <p>Gestion Candidat</p>
         <hr>
         <div class="d-flex justify-content-between align-items-center">
-            <button class="btn btn-success">Forcer QCM</button>
-            <button class="btn btn-success">Forcer Entretient</button>
-            <button class="btn btn-success">Forcer WhiteList</button>
+            <a href="{{ route('recruiters.candidate.force.qcm', $Candidate->id) }}"><button class="btn btn-success">Forcer QCM</button></a>
+            <a href="{{ route('recruiters.candidate.force.appointment',$Candidate->id) }}"><button class="btn btn-success">Forcer Entretient</button></a>
+            <a href="{{ route('recruiters.candidate.force.whitelist', $Candidate->discordAccountId) }}"><button class="btn btn-success">Forcer WhiteList</button></a>
         </div>
 
         <hr>
+
         <div class="d-flex justify-content-between align-items-center">
-            <button class="btn btn-danger">Bannir</button>
-            <button class="btn btn-danger">Supprimer QCM</button>
-            <button class="btn btn-danger">Supprimer Entretient</button>
-            <button class="btn btn-danger">Supprimer WhiteList</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalBan" data-bs-discordAccountId="{{ $Candidate->discordAccountId }}">Bannir</button>
+            <a href="{{ route('recruiters.candidate.remove.qcm',$Candidate->id) }}"><button class="btn btn-danger">Supprimer QCM</button></a>
+            <a href="{{ route('recruiters.candidate.remove.appointment',$Candidate->id) }}"><button class="btn btn-danger">Supprimer Entretient</button></a>
+            <a href="{{ route('recruiters.candidate.remove.whitelist', $Candidate->discordAccountId) }}" ><button class="btn btn-danger">Supprimer WhiteList</button></a>
         </div>
+    </div>
+</div>
+
+<div class="row mt-2 mb-2">
+    <hr>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <form action="{{ route('recruiters.candidate.update.note') }}" method="post">
+            @csrf
+            <input type="hidden" name="id" id="id" value="{{ $Candidate->id }}">
+            <div class="form-floating text-black">
+                <textarea class="form-control" placeholder="Note" id="note" name="note" style="height: 100px">{{ $Candidate->note }}</textarea>
+                <label for="note">Note</label>
+            </div>
+            <div class="mb-2 mt-2">
+                <button class="btn btn-success">Ajouter la note</button>
+            </div>
+        </form>
     </div>
 </div>

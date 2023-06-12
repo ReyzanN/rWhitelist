@@ -46,7 +46,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($C->appointement)
+                                            @if($C->appointment)
                                                 <i class="bi bi-check-circle" style="color: green"></i>
                                             @else
                                                 <i class="bi bi-question-circle" style="color: orange"></i>
@@ -85,6 +85,48 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ban -->
+    <div class="modal fade" id="ModalBan" tabindex="-1" aria-labelledby="ModalBanLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-black text-white">
+                <div class="modal-header bg-black text-white">
+                    <h1 class="modal-title fs-5" id="ModalBanLabel">Bannissement</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-black text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-danger">Permanent</button>
+                        <button class="btn btn-danger">1 Jour</button>
+                        <button class="btn btn-danger">2 Jours</button>
+                        <button class="btn btn-danger">3 Jours</button>
+                        <button class="btn btn-danger">1 Semaines</button>
+                    </div>
+                    <div class="row mt-2">
+                        <p>Custom : </p>
+                        <form action="{{ route('recruiters.ban.add') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="discordAccountId" value="" id="discordAccountId">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="reason" name="reason" placeholder="Raison">
+                                <label for="reason">Raison du ban</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="datetime-local" class="form-control" id="expiration" name="expiration" placeholder="Raison">
+                                <label for="expiration">Date d'expiration</label>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-success">Bannir</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#ModalUsers">Retour</button>
                 </div>
             </div>
         </div>

@@ -23,7 +23,9 @@ class User extends Authenticatable
         'discordEmail',
         'lastConnection',
         'qcm',
-        'appointment'
+        'appointment',
+        'killSession',
+        'note'
     ];
 
     /**

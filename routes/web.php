@@ -29,7 +29,7 @@ Route::get('/login',[AuthController::class, 'Login'])->name('auth.login');
 Route::get('/loginValidation', [AuthController::class, 'TryLogin'])->name('auth.trylogin');
 Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth','killSession'])->group(function(){
     /* Dashboard */
     Route::get('/dashboard', DashboardPublicController::class)->name('dashPublic.index');
 
@@ -87,7 +87,7 @@ Route::middleware(['auth'])->group(function(){
          * Ban List
          */
         Route::get('/recruiters/ban/list/view',[BanListController::class, 'DisplayBanList'])->name('recruiters.banlist.view');
-        Route::get('/recruiters/ban/add/{DiscordId}', [BanListController::class, 'TryBan'])->name('recruiters.ban.add');
+        Route::post('/recruiters/ban/add/', [BanListController::class, 'AddBan'])->name('recruiters.ban.add');
 
         /*
          * Candidate Management
@@ -97,5 +97,28 @@ Route::middleware(['auth'])->group(function(){
              * Ajax
              */
             Route::post('/recruiters/candidate/view/', [CandidateManagementController::class, 'RecruitersCandidateManagementViewCandidate'])->name('recruiters.candidate.view.ajax');
+            /*
+             * Add / Remove Whitelist
+             */
+            Route::get('/recruiters/candidate/forceWhitelist/{DiscordIDAccount}', [CandidateManagementController::class, 'ForceWhiteList'])->name('recruiters.candidate.force.whitelist');
+            Route::get('/recruiters/candidate/removeWhitelist/{DiscordIDAccount}', [CandidateManagementController::class, 'RemoveWhiteList'])->name('recruiters.candidate.remove.whitelist');
+
+            /*
+             * Add / Remove QCM
+             */
+            Route::get('/recruiters/candidate/forceQCM/{UserId}', [CandidateManagementController::class, 'ForceQCM'])->name('recruiters.candidate.force.qcm');
+            Route::get('/recruiters/candidate/removeQCM/{UserId}', [CandidateManagementController::class, 'RemoveQCM'])->name('recruiters.candidate.remove.qcm');
+
+            /*
+             * Add / Remove Appointment
+             */
+            Route::get('/recruiters/candidate/forceAppointment/{UserId}', [CandidateManagementController::class, 'ForceAppointment'])->name('recruiters.candidate.force.appointment');
+            Route::get('/recruiters/candidate/removeAppointment/{UserId}', [CandidateManagementController::class, 'RemoveAppointment'])->name('recruiters.candidate.remove.appointment');
+
+            /*
+             * Update Note
+             */
+            Route::post('/recruiters/candidate/update/note',[CandidateManagementController::class,'UpdateNote'])->name('recruiters.candidate.update.note');
+
     });
 });

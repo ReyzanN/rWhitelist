@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 
 class BanList extends Model
 {
@@ -21,13 +22,19 @@ class BanList extends Model
      * Functions
      */
     public static function isBanned($DiscordAccountID) :bool {
-        $Check = BanList::where('discordAccountId', '=' ,$DiscordAccountID)->where('expiration', '>',new \DateTime())->get()->first();
-        if ($Check) { return true;}
+        $Check = BanList::where('discordAccountId', '=' ,$DiscordAccountID)->where('expiration', '>',new \DateTime())->orderBy('id','desc')->get()->first();
+        if ($Check) { return true;};
         return false;
     }
 
-    public static function GetBannedForUser($DiscordAccountID): bool|BanList {
-        $Check = BanList::where(['discordAccountId' => $DiscordAccountID])->get()->first();
+    public static function GetBanForUser($DiscordAccountID): bool|BanList {
+        $Check = BanList::where(['discordAccountId' => $DiscordAccountID])->get();
+        if ($Check) { return $Check;}
+        return false;
+    }
+
+    public static function GetLastBanForUser($DiscordAccountID): bool|BanList {
+        $Check = BanList::where('discordAccountId', '=' ,$DiscordAccountID)->where('expiration', '>',new \DateTime())->orderBy('id','desc')->get()->first();
         if ($Check) { return $Check;}
         return false;
     }

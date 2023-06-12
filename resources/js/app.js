@@ -28,3 +28,15 @@ $(document).ready(function(){
         lengthMenu: [10],
     })
 });
+
+/*
+Modal Ban Candidate
+ */
+let ModalBan = document.getElementById('ModalBan')
+if (ModalBan){
+    ModalBan.addEventListener('show.bs.modal', event => {
+        let Button = event.relatedTarget
+        let DiscordAccountId = Button.getAttribute('data-bs-discordAccountId')
+        let Input = document.getElementById('discordAccountId').value = DiscordAccountId
+    })
+}
