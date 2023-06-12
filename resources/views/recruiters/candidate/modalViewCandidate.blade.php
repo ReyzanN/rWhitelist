@@ -49,6 +49,17 @@
 
 <div class="row mt-2 mb-2"></div>
 
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-6">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="addon3">Date de naissance</span>
+            <input type="text" class="form-control" aria-describedby="addon3" value="{{ $Candidate->parseDateToString($Candidate->birthdate) }}" readonly>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2 mb-2"></div>
+
 <div class="row">
     <div class="col-4 d-flex justify-content-center align-items-center flex-column">
         <span class="badge text-bg-light">Status QCM</span>
