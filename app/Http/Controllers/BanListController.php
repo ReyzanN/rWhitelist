@@ -52,4 +52,18 @@ class BanListController extends Controller
         }
         return redirect()->back();
     }
+
+    public function UpdateBan(BanRequest $request){
+        $Check = $this->Exist(BanList::class,$request->only('id')['id']);
+        if(!$Check) { abort(404); }
+        if ($request->validated()){
+            try {
+                $Check->update($request->only('reason','expiration'));
+                Session::flash('Success', 'Le bannissement à été modifié avec succès');
+            }catch (\Exception $e){
+                Session::flash('Failure','Une erreur est survenue');
+            }
+        }
+        return redirect()->back();
+    }
 }

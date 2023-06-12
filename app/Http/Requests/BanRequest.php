@@ -22,7 +22,8 @@ class BanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'discordAccountId' => 'required',
+            'id' => 'int',
+            'discordAccountId' => 'int',
             'reason' => 'string',
             'expiration' => 'date'
         ];
@@ -31,9 +32,10 @@ class BanRequest extends FormRequest
     public function messages()
     {
         return [
-          'discordAccountId' => 'Une discord est requis',
-          'reason' => 'Une raison est requise',
-          'expiration' => 'Une durée de ban est requise'
+            'id' => 'Le numéro du ban en numéro',
+            'discordAccountId' => 'Une discord est requis',
+            'reason' => 'Une raison est requise',
+            'expiration' => 'Une durée de ban est requise'
         ];
     }
 }

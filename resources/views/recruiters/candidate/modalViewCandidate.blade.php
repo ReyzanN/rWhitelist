@@ -178,7 +178,7 @@
                     <td>{{ $Ban->parseDateToString($Ban->created_at) }}</td>
                     <td>{{ $Ban->parseDateToString($Ban->updated_at) }}</td>
                     <td>
-                        <button class="btn btn-primary bgPurpleButton"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#ModalUpdateBan" data-bs-id="{{ $Ban->id }}" data-bs-reason="{{ $Ban->reason }}" data-bs-expiration="{{ $Ban->expiration }}"><i class="bi bi-pencil"></i></button>
                         <a href="{{ route('recruiters.ban.remove', $Ban->id) }}"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button></a>
                     </td>
                 </tr>

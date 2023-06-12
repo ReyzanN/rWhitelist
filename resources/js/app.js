@@ -40,3 +40,20 @@ if (ModalBan){
         let Input = document.getElementById('discordAccountId').value = DiscordAccountId
     })
 }
+
+/*
+Modal Update ban Candidate
+*/
+let ModalUpdateBan = document.getElementById('ModalUpdateBan')
+if (ModalUpdateBan) {
+    ModalUpdateBan.addEventListener('show.bs.modal', event => {
+        let Button = event.relatedTarget
+        let Id = Button.getAttribute('data-bs-id')
+        let Reason = Button.getAttribute('data-bs-reason')
+        let Expiration = Button.getAttribute('data-bs-expiration')
+        //--
+        let IdBan = document.getElementById('idBan').value = Id
+        let ReasonBan = document.getElementById('ReasonBan').value = Reason
+        let ExpirationBan = document.getElementById('ExpirationBan').value = Expiration
+    })
+}

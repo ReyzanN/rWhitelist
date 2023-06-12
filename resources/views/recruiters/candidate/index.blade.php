@@ -131,6 +131,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Update Ban -->
+
+    <div class="modal fade" id="ModalUpdateBan" tabindex="-1" aria-labelledby="ModalUpdateBanLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-black text-white">
+                <div class="modal-header bg-black text-white">
+                    <h1 class="modal-title fs-5" id="ModalUpdateBanLabel">Modifier une bannissement</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-black text-white">
+                    <form action="{{ route('recruiters.ban.update') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="id" id="idBan" value="">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="ReasonBan" name="reason" placeholder="Le cœur a ses raisons que la raison ignore" value="">
+                            <label for="ReasonBan">Raison</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="datetime-local" class="form-control" id="ExpirationBan" name="expiration" value="">
+                            <label for="ExpirationBan">Expiration</label>
+                        </div>
+
+                        <div class="mb-2 mt-2">
+                            <button class="btn btn-warning">Modifier</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#ModalUsers">Retour</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
