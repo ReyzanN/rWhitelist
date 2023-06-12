@@ -88,6 +88,7 @@ Route::middleware(['auth','killSession'])->group(function(){
          */
         Route::get('/recruiters/ban/list/view',[BanListController::class, 'DisplayBanList'])->name('recruiters.banlist.view');
         Route::post('/recruiters/ban/add/', [BanListController::class, 'AddBan'])->name('recruiters.ban.add');
+        Route::get('/recruiters/ban/remove/{BanId}', [BanListController::class, 'RemoveBan'])->name('recruiters.ban.remove');
 
         /*
          * Candidate Management

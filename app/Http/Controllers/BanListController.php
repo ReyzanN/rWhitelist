@@ -40,4 +40,16 @@ class BanListController extends Controller
             return redirect()->back();
         }
     }
+
+    public function RemoveBan($BanId){
+        $Check = $this->Exist(BanList::class,$BanId);
+        if (!$Check) { abort(404); }
+        try {
+            $Check->delete();
+            Session::flash('Success', 'Suppression réussi avec succès');
+        }catch (\Exception $e){
+            Session::flash('Failure', 'Une erreur est survenue');
+        }
+        return redirect()->back();
+    }
 }

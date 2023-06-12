@@ -179,7 +179,7 @@
                     <td>{{ $Ban->parseDateToString($Ban->updated_at) }}</td>
                     <td>
                         <button class="btn btn-primary bgPurpleButton"><i class="bi bi-pencil"></i></button>
-                        <button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button>
+                        <a href="{{ route('recruiters.ban.remove', $Ban->id) }}"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button></a>
                     </td>
                 </tr>
             @endforeach
