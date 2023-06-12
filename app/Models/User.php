@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, tools;
 
     /**
      * The attributes that are mass assignable.
@@ -55,8 +55,14 @@ class User extends Authenticatable
         return $this->hasMany(UserRank::class,'userId', 'id')->get();
     }
 
-    public function QCMApplication(){
+    public function QCMApplication(): \Illuminate\Database\Eloquent\Collection
+    {
         return $this->hasMany(QCMCandidate::class,'idUser','id')->get();
+    }
+
+    public function GetBan(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->hasMany(BanList::class,'discordAccountId','discordAccountId')->get();
     }
 
     /* --- */

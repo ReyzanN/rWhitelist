@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BanListController;
+use App\Http\Controllers\CandidateManagementController;
 use App\Http\Controllers\DashboardPublicController;
 use App\Http\Controllers\DashboardRecruitersController;
 use App\Http\Controllers\HomePublicController;
@@ -86,7 +87,15 @@ Route::middleware(['auth'])->group(function(){
          * Ban List
          */
         Route::get('/recruiters/ban/list/view',[BanListController::class, 'DisplayBanList'])->name('recruiters.banlist.view');
-
         Route::get('/recruiters/ban/add/{DiscordId}', [BanListController::class, 'TryBan'])->name('recruiters.ban.add');
+
+        /*
+         * Candidate Management
+         */
+        Route::get('/recruiters/candidate/view/all', [CandidateManagementController::class, 'RecruitersCandidateManagementIndex'])->name('recruiters.candidate.view');
+            /*
+             * Ajax
+             */
+            Route::post('/recruiters/candidate/view/', [CandidateManagementController::class, 'RecruitersCandidateManagementViewCandidate'])->name('recruiters.candidate.view.ajax');
     });
 });

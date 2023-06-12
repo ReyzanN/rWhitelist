@@ -6,10 +6,10 @@ trait tools
 {
     public function parseDateToString(string|\DateTime $Date){
         if (!is_string($Date)){
-            return $Date->format('d/m/y - H:i');
+            return $Date->format('d/m/y - H:i:s');
         }else{
             $TempDate = new \DateTime($Date);
-            return $TempDate->format('d/m/y - H:i');
+            return $TempDate->format('d/m/y - H:i:s');
         }
     }
 

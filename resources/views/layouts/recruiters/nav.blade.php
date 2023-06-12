@@ -22,7 +22,7 @@
             <p class="text-uppercase text-light text-opacity-75 text-center">Gestion candidats</p>
             <ul class="text-center poppins">
                 <li class="list-group-item">
-                    <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-people"></i>&nbsp;Voir tous les candidats</a>
+                    <a href="{{ route('recruiters.candidate.view') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-people"></i>&nbsp;Voir tous les candidats</a>
                 </li>
                 <li class="list-group-item mt-2">
                     <a href="{{ route('qcm.correction') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-clipboard"></i>&nbsp;Correction QCM</a>

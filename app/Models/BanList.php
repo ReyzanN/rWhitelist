@@ -21,7 +21,7 @@ class BanList extends Model
      * Functions
      */
     public static function isBanned($DiscordAccountID) :bool {
-        $Check = BanList::where(['discordAccountId' => $DiscordAccountID])->get()->first();
+        $Check = BanList::where('discordAccountId', '=' ,$DiscordAccountID)->where('expiration', '>',new \DateTime())->get()->first();
         if ($Check) { return true;}
         return false;
     }
