@@ -156,4 +156,24 @@ class DiscordAuth
     public function getDiscordRoles() : array {
         return $this->_DiscordAccountRole;
     }
+
+    /*
+     * API Functions Discord Usage
+     */
+    public static function AddBanList($UserId,$Reason){
+        $ServerID = env("APP_DISCORD_SERVER_ID");
+        $DiscordAPITarget = "https://discordapp.com/api/v9/guilds/$ServerID/bans/$UserId";
+        $CurlGiveRole = curl_init();
+        $BotToken = env('APP_DISCORD_TOKEN_BOT');
+        $Header = array("Authorization: Bot $BotToken", "Content-Type: application/json");
+        curl_setopt($CurlGiveRole, CURLOPT_HTTPHEADER, $Header);
+        curl_setopt($CurlGiveRole, CURLOPT_URL, $DiscordAPITarget);
+        curl_setopt($CurlGiveRole, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($CurlGiveRole, CURLOPT_POSTFIELDS, json_encode(array("reason" => "$Reason")));
+        curl_setopt($CurlGiveRole, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($CurlGiveRole, CURLOPT_SSL_VERIFYPEER, 0);
+        //--
+        $Result = curl_exec($CurlGiveRole);
+        curl_close($CurlGiveRole);
+    }
 }

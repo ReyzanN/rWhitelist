@@ -87,5 +87,6 @@ Route::middleware(['auth'])->group(function(){
          */
         Route::get('/recruiters/ban/list/view',[BanListController::class, 'DisplayBanList'])->name('recruiters.banlist.view');
 
+        Route::get('/recruiters/ban/add/{DiscordId}', [BanListController::class, 'TryBan'])->name('recruiters.ban.add');
     });
 });
