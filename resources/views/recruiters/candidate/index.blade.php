@@ -133,7 +133,6 @@
     </div>
 
     <!-- Modal Update Ban -->
-
     <div class="modal fade" id="ModalUpdateBan" tabindex="-1" aria-labelledby="ModalUpdateBanLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-black text-white">

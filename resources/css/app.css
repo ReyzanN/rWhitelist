@@ -149,6 +149,13 @@ Tools
     color: white !important;
 }
 
+#BanList_wrapper select,option{
+    color: white !important;
+}
+
+#BanList_filter input{
+    color: white !important;
+}
 
 /*
 Public/auth/index
