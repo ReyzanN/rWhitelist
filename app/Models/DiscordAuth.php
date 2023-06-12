@@ -22,7 +22,7 @@ class DiscordAuth
      * Target Client Info
      */
     private string $_DiscordAccountEmail;
-    private string $_DiscordAccountAvatar;
+    private string|null $_DiscordAccountAvatar;
     private string $_DiscordAccountId;
     private string $_DiscordAccountUsername;
     private array $_DiscordAccountRole;
@@ -147,7 +147,7 @@ class DiscordAuth
     public function getDiscordUsername() :string {
         return $this->_DiscordAccountUsername;
     }
-    public function getDiscordAvatar() :string {
+    public function getDiscordAvatar() :string|null {
         return $this->_DiscordAccountAvatar;
     }
     public function getDiscordId() :string {
