@@ -19,7 +19,7 @@
     <div class="col-6">
         <div class="input-group mb-3">
             <span class="input-group-text" id="addon3"><i class="bi bi-steam"></i></span>
-            <input type="text" class="form-control" aria-describedby="addon3" value="{{ $Candidate->steamid }}" readonly>
+            <input type="text" class="form-control" aria-describedby="addon3" value="{{ $Candidate->steamId }}" readonly>
         </div>
     </div>
     <div class="col-6">
