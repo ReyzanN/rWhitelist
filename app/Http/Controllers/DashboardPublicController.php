@@ -14,4 +14,9 @@ class DashboardPublicController extends Controller
     public function __invoke(){
         return view('public.dashboard.index');
     }
+
+    public function viewProfile(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        return view('public.dashboard.profile');
+    }
 }

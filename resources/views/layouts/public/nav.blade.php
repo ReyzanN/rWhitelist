@@ -10,7 +10,7 @@
                     <a href="{{ route('dashPublic.index') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-house"></i>&nbsp;Accueil</a>
                 </li>
                 <li class="list-group-item mt-2">
-                    <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-person"></i>&nbsp;Mon Profil</a>
+                    <a href="{{ route('dashPublic.profile') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-person"></i>&nbsp;Mon Profil</a>
                 </li>
                 <li class="list-group-item mt-2">
                     <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-info-circle"></i>&nbsp;Informations</a>

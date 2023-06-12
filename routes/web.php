@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardRecruitersController;
 use App\Http\Controllers\HomePublicController;
 use App\Http\Controllers\QCMCandidateController;
 use App\Http\Controllers\QCMController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,12 @@ Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
 Route::middleware(['auth','killSession'])->group(function(){
     /* Dashboard */
     Route::get('/dashboard', DashboardPublicController::class)->name('dashPublic.index');
+
+    /*
+     * Profile
+     */
+    Route::get('/dashboard/myProfile', [DashboardPublicController::class, 'viewProfile'])->name('dashPublic.profile');
+    Route::post('/dashboard/myProfile/updateInformations', [UsersController::class,'UpdateInformation'])->name('users.updateInformation');
 
 
     /*

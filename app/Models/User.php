@@ -25,7 +25,9 @@ class User extends Authenticatable
         'qcm',
         'appointment',
         'killSession',
-        'note'
+        'note',
+        'birthdate',
+        'steamId'
     ];
 
     /**
