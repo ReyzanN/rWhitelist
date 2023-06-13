@@ -111,6 +111,8 @@ Route::middleware(['auth','killSession'])->group(function(){
          * Ajax
          */
         Route::post('/recruiters/session/view/candidate', [RecruitmentSessionsController::class, 'ViewCandidate'])->name('recruiters.session.view.candidate.ajax');
+        Route::post('/recruiters/session/call/candidate', [RecruitmentSessionsController::class, 'CallCandidateSpecific'])->name('recruiters.session.candidate.call.ajax');
+        Route::post('/recruiters/session/call/candidate/all', [RecruitmentSessionsController::class, 'CallCandidateSpecificAll'])->name('recruiters.session.candidate.call.all.ajax');
 
         /*
          * Ban List

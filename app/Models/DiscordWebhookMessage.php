@@ -80,5 +80,46 @@ class DiscordWebhookMessage
         curl_close($Curl);
     }
 
+    public function SendWebhookCallCandidate($DiscordCandidate){
+        $MessageContent = json_encode([
+            "username" => "Recrutement",
+            "tts" => false,
+            "content" => "Bonjour, <@$DiscordCandidate>, merci de te présenter !"
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+        $Curl = curl_init($this->_Url);
+        curl_setopt($Curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        curl_setopt($Curl, CURLOPT_POST, 1);
+        curl_setopt($Curl, CURLOPT_POSTFIELDS, $MessageContent);
+        curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($Curl, CURLOPT_HEADER, 0);
+        curl_setopt($Curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_exec($Curl);
+        curl_close($Curl);
+    }
+
+    public function SendWebhookCallCandidateAll(array $DiscordAccountList){
+        $Content = "Bonjour, ";
+        foreach ($DiscordAccountList as $Account){
+            $Content .= "<@$Account>,";
+        }
+        $Content .= "la session, va débuter merci de vous rendre disponniblent";
+        $MessageContent = json_encode([
+            "username" => "Recrutement",
+            "tts" => false,
+            "content" => $Content
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+        $Curl = curl_init($this->_Url);
+        curl_setopt($Curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        curl_setopt($Curl, CURLOPT_POST, 1);
+        curl_setopt($Curl, CURLOPT_POSTFIELDS, $MessageContent);
+        curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($Curl, CURLOPT_HEADER, 0);
+        curl_setopt($Curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_exec($Curl);
+        curl_close($Curl);
+    }
+
 
 }

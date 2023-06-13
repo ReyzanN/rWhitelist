@@ -9,6 +9,7 @@
             <div class="d-flex justify-content-center align-items-center">
                 <hr class="w-75">
             </div>
+            <div id="MessageAjax"></div>
             @include('layouts.recruiters.errors')
         </div>
         <div class="row text-white poppins">
@@ -67,6 +68,9 @@
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
+                            <div class="mt-1 mb-1">
+                                <button class="btn btn-success bgPurpleButton" onclick="SearchAjax('{{ $SessionInformation->id }}','{{ route('recruiters.session.candidate.call.all.ajax') }}','MessageAjax', '{{ csrf_token() }}')">Appeler les candidats</button>
+                            </div>
                             <table class="table text-black" id="CandidateListeForSession">
                                 <thead>
                                 <tr>
@@ -88,6 +92,7 @@
                                             <button class="btn btn-success"><i class="bi bi-check"></i></button>
                                             <button class="btn btn-warning"><i class="bi bi-question-lg"></i></button>
                                             <button class="btn btn-danger"><i class="bi bi-x"></i></button>
+                                            <button class="btn btn-danger" onclick="SearchAjax('{{ $Candidate->GetUser()->discordAccountId }}','{{ route('recruiters.session.candidate.call.ajax') }}','MessageAjax', '{{ csrf_token() }}')"><i class="bi bi-bell"></i></button>
                                             <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#ModalUsers" onclick="SearchAjax('{{ $Candidate->GetUser()->id }}','{{ route('recruiters.session.view.candidate.ajax') }}','ModalInfoCandidate','{{ csrf_token() }}')"><i class="bi bi-eye"></i></button>
                                         </td>
                                     </tr>

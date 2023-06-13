@@ -61,41 +61,6 @@
 <div class="row mt-2 mb-2"></div>
 
 <div class="row">
-    <div class="col-4 d-flex justify-content-center align-items-center flex-column">
-        <span class="badge text-bg-light">Status QCM</span>
-        <div class="mt-2">
-            @if($Candidate->qcm)
-            <span><i class="bi bi-check-circle" style="color: green;font-size: 2rem"></i></span>
-            @else
-            <span><i class="bi bi-question-circle" style="color: orange;font-size: 2rem"></i></span>
-            @endif
-        </div>
-    </div>
-    <div class="col-4 d-flex justify-content-center align-items-center flex-column">
-        <span class="badge text-bg-light">Status Entretient</span>
-        <div class="mt-2">
-            @if($Candidate->appointement)
-            <span><i class="bi bi-check-circle" style="color: green;font-size: 2rem"></i></span>
-            @else
-            <span><i class="bi bi-question-circle" style="color: orange;font-size: 2rem"></i></span>
-            @endif
-        </div>
-    </div>
-    <div class="col-4 d-flex justify-content-center align-items-center flex-column">
-        <span class="badge text-bg-light">Status Whitelist</span>
-        <div class="mt-2">
-            @if($Candidate->isWl())
-            <span><i class="bi bi-check-circle" style="color: green;font-size: 2rem"></i></span>
-            @else
-            <span><i class="bi bi-question-circle" style="color: orange;font-size: 2rem"></i></span>
-            @endif
-        </div>
-    </div>
-</div>
-
-<div class="row mt-2 mb-2"></div>
-
-<div class="row">
     <div class="col-12">
         <p>QCM Du Candidat</p>
         <hr>
@@ -177,7 +142,6 @@
                 <th scope="col">Date d'expiration</th>
                 <th scope="col">Date de ban</th>
                 <th scope="col">Date de modification</th>
-                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -188,10 +152,6 @@
                 <td>{{ $Ban->parseDateToString($Ban->expiration) }}</td>
                 <td>{{ $Ban->parseDateToString($Ban->created_at) }}</td>
                 <td>{{ $Ban->parseDateToString($Ban->updated_at) }}</td>
-                <td>
-                    <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#ModalUpdateBan" data-bs-id="{{ $Ban->id }}" data-bs-reason="{{ $Ban->reason }}" data-bs-expiration="{{ $Ban->expiration }}"><i class="bi bi-pencil"></i></button>
-                    <a href="{{ route('recruiters.ban.remove', $Ban->id) }}"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-trash"></i></button></a>
-                </td>
             </tr>
             @endforeach
             </tbody>

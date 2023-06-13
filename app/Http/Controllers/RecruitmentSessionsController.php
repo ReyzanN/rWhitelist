@@ -131,4 +131,26 @@ class RecruitmentSessionsController extends Controller
         }
         return redirect()->route('recruiters.sessions.view');
     }
+
+    /*
+     * Call Candidate Ajax
+     */
+    public function CallCandidateSpecific(Request $request){
+        $DiscordWebhook = new DiscordWebhookMessage(env('APP_WEB_HOOK_SESSION_URL'));
+        $DiscordWebhook->SendWebhookCallCandidate($request->only('data')['data']);
+        return view('recruiters.session.customMessage');
+    }
+
+    public function CallCandidateSpecificAll(Request $request){
+        $Check = RecruitmentSession::SessionIsActive($request->only('data')['data']);
+        if (!$Check) { abort(404); }
+        $SessionCandidate = $Check->GetCandidateRegistration();
+        $AccountToPing = array();
+        foreach ($SessionCandidate as $Candidate){
+            $AccountToPing[] = $Candidate->GetUser()->discordAccountId;
+        }
+        $DiscordWebhook = new DiscordWebhookMessage(env('APP_WEB_HOOK_SESSION_URL'));
+        $DiscordWebhook->SendWebhookCallCandidateAll($AccountToPing);
+        return view('recruiters.session.customMessage');
+    }
 }
