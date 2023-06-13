@@ -21,6 +21,7 @@ class RecruitmentSession extends Model
         'maxCandidate',
         'SessionDate',
         'theme',
+        'active',
         'created_by',
         'closed_by'
     ];
