@@ -97,6 +97,12 @@ Route::middleware(['auth','killSession'])->group(function(){
         Route::get('/recruiters/sessions/', RecruitmentSessionsController::class)->name('recruiters.sessions.view');
         Route::post('/recruiters/sessions/add', [RecruitmentSessionsController::class,'AddSession'])->name('recruiters.sessions.add');
 
+            /*
+             * Recruiters Session Register
+             */
+            Route::get('/recruiters/sessions/register/{IdSession}', [RecruitmentSessionsController::class,'RegisterRecruitersForSession'])->name('recruiters.session.register');
+            Route::get('/recruiters/sessions/unregister/{IdSession}', [RecruitmentSessionsController::class,'RemoveRegistrationRecruitersForSession'])->name('recruiters.session.unregister');
+
         /*
          * Ban List
          */

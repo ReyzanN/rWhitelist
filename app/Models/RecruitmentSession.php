@@ -61,4 +61,20 @@ class RecruitmentSession extends Model
         return count($this->GetRecruitersRegistration());
     }
 
+    public function RecruitersIsRegisteredForSession($IdRecruiter): bool
+    {
+        foreach ($this->GetRecruitersRegistration() as $Registration){
+            if ($Registration->idUser == $IdRecruiter){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function SessionIsActive($Id){
+        $Check = RecruitmentSession::where(['id' => $Id,'active'=> 1])->get()->first();
+        if (!$Check) { return false; }
+        return $Check;
+    }
+
 }

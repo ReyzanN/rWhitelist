@@ -41,7 +41,11 @@
                                         </div>
                                         <div class="row d-flex justify-content-center align-items-center">
                                             <div class="col-6 d-flex justify-content-center align-items-center">
-                                                <button class="btn btn-success bgPurpleButton">Je participe</button>
+                                                @if($Session->RecruitersIsRegisteredForSession(auth()->user()->id))
+                                                    <a href="{{ route('recruiters.session.unregister', $Session->id) }}"><button class="btn btn-success bgPurpleButton">Je participe plus</button></a>
+                                                @else
+                                                    <a href="{{ route('recruiters.session.register',$Session->id) }}"><button class="btn btn-success bgPurpleButton">Je participe</button></a>
+                                                @endif
                                             </div>
                                             <div class="col-6 d-flex justify-content-center align-items-center">
                                                 <button class="btn btn-success bgPurpleButton"><i class="bi bi-eye"></i></button>

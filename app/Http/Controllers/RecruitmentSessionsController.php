@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RecruitmentSessionRequest;
 use App\Models\DiscordWebhookMessage;
 use App\Models\RecruitmentSession;
+use App\Models\RecruitmentSessionRecruiterRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -45,6 +46,37 @@ class RecruitmentSessionsController extends Controller
             }catch (\Exception $e){
                 Session::flash('Failure','Une erreur est survenue');
             }
+        }
+        return redirect()->back();
+    }
+
+    /*
+     * Recruiters
+     */
+    public function RegisterRecruitersForSession($IdSession){
+        $Check = RecruitmentSession::SessionIsActive($IdSession);
+        if (!$Check) { abort(404); }
+        try {
+            RecruitmentSessionRecruiterRegistration::create([
+                'idUser' => auth()->user()->id,
+                'idSession' => $Check->id
+            ]);
+            Session::flash('Success','Vous êtes inscrits, merci !');
+        }catch (\Exception $e){
+            Session::flash('Failure','Une erreur est survenue');
+        }
+        return redirect()->back();
+    }
+
+    public function RemoveRegistrationRecruitersForSession($IdSession){
+        $Check = RecruitmentSession::SessionIsActive($IdSession);
+        if (!$Check) { abort(404); }
+        try {
+            $Registration = RecruitmentSessionRecruiterRegistration::where(['idUser' => auth()->user()->id,'idSession' => $Check->id]);
+            $Registration->delete();
+            Session::flash('Success','Vous n\'êtes plus inscrits');
+        }catch (\Exception $e){
+            Session::flash('Failure','Une erreur est survenue');
         }
         return redirect()->back();
     }
