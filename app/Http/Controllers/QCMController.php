@@ -168,10 +168,21 @@ class QCMController extends Controller
         if ($QCM){
             return view('recruiters.qcm.correctionForm', ['QCM' => $QCM, 'QuestionsList' => $QCM->QCMAnswer()]);
         }
+        $CheckQCMMarked = QCMCandidate::find($IdQCM);
+        if ($CheckQCMMarked){
+            return view('recruiters.qcm.correctionFormView', ['QCM' => $CheckQCMMarked, 'QuestionsList' => $CheckQCMMarked->QCMAnswer()]);
+        }
         return redirect()->back();
     }
 
     public function UpdateCorrectionQCMCandidate($IdQCM,$QuestionID,$Params){
+        /*
+         * Fix Bypass QCM already marked
+         */
+        $QCM = QCMCandidate::QCMIsPendingAndNotMarked($IdQCM);
+        if (!$QCM) {
+            abort(404);
+        }
         $Question = QCMCandidateAnswer::where(['idQCMCandidate' => $IdQCM, 'id' => $QuestionID])->get()->first();
         if (!$Question){
             Session::flash('Failure','Cette question n\'est pas lié à ce candidat');
@@ -197,7 +208,10 @@ class QCMController extends Controller
     }
 
     public function UpdateFinalQCM($IdQCM){
-        $QCM = QCMCandidate::find($IdQCM);
+        /*
+         * Patch Bypass
+         */
+        $QCM = QCMCandidate::QCMIsPendingAndNotMarked($IdQCM);
         if (!$QCM){
             Session::flash('Failure','Ce questionnaire n\'appartient à personne');
         }
