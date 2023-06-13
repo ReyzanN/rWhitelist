@@ -105,6 +105,8 @@ Route::middleware(['auth','killSession'])->group(function(){
 
         Route::get('/recruiters/sessions/view/{IdSession}', [RecruitmentSessionsController::class, 'ViewSession'])->name('recruiters.viewSession');
 
+        Route::get('/recruiters/sessions/terminate/{IdSession}',[RecruitmentSessionsController::class,'TerminateSession'])->name('recruiters.terminateSession');
+
         /*
          * Ajax
          */

@@ -106,4 +106,29 @@ class RecruitmentSessionsController extends Controller
         }
         return view('recruiters.session.modalContentCandidate', ['Candidate' => $Check]);
     }
+
+    public function TerminateSession($IdSession): \Illuminate\Http\RedirectResponse
+    {
+        $Check = RecruitmentSession::SessionIsActive($IdSession);
+        if (!$Check) { abort(404); }
+        $CandidateForSession = $Check->GetCandidateRegistration();
+        try {
+            foreach ($CandidateForSession as $Candidate){
+                if ($Candidate->result == null){
+                    $Candidate->update([
+                        'present' => 0,
+                        'result' => 0
+                    ]);
+                }
+            }
+            $Check->update([
+                'active' => 0,
+                'closed_by' => auth()->user()->id
+            ]);
+            Session::flash('Success','La session à été fermée avec succès');
+        }catch (\Exception $e){
+            Session::flash('Failure','Une erreur est survenue');
+        }
+        return redirect()->route('recruiters.sessions.view');
+    }
 }

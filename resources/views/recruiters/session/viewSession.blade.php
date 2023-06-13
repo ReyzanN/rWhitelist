@@ -79,8 +79,6 @@
                                 </thead>
                                 <tbody>
                                 @foreach($SessionInformation->GetCandidateRegistration() as $Candidate)
-
-                                @endforeach
                                     <tr>
                                         <th scope="row">{{ $Candidate->GetUser()->id }}</th>
                                         <td>{{ $Candidate->GetUser()->discordUserName }}</td>
@@ -93,6 +91,7 @@
                                             <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#ModalUsers" onclick="SearchAjax('{{ $Candidate->GetUser()->id }}','{{ route('recruiters.session.view.candidate.ajax') }}','ModalInfoCandidate','{{ csrf_token() }}')"><i class="bi bi-eye"></i></button>
                                         </td>
                                     </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -100,6 +99,15 @@
                 </div>
             </div>
         </div>
+
+        <div class="row mt-2 mb-2"></div>
+
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-items-center">
+                <button class="btn btn-success bgPurpleButton" data-bs-toggle="modal" data-bs-target="#EndSession">La session est terminée</button>
+            </div>
+        </div>
+
         <div class="d-flex justify-content-end align-content-end mt-5">
             <button class="btn btn-danger" onclick="self.close()">Quitter</button>
         </div>
@@ -118,6 +126,29 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm en session -->
+    <div class="modal fade" id="EndSession" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="EndSessionlabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="EndSessionlabel">Confirmation fin de session</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        Attention cette opération est non réversible terminer la session passera tous les candidats au status d'échoué, ils pourront se représenter néanmoins ils auront une absence.
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="{{ route('recruiters.terminateSession',$SessionInformation->id) }}"><button class="btn btn-success bgPurpleButton">Terminer la session</button></a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>
