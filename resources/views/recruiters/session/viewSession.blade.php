@@ -197,7 +197,7 @@
                             Si vous validez cette personne elle obtiendra le grade whitelist, c'est votre dernier mot ?
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
-                            <a href="{{ route('recruiters.sessions.validateCandidate', [$Candidate->idSession,$Candidate->idUser]) }}"><button class="btn btn-success">Valider l'entretient</button></a>
+                            <a href=""><button class="btn btn-success">Valider l'entretient</button></a>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -220,7 +220,7 @@
                             Cette personne sera refusée, néanmoins elle aura la possibilité de retenter sa chance.
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
-                            <a href="{{ route('recruiters.sessions.refusedCandidate', [$Candidate->idSession,$Candidate->idUser]) }}"><button class="btn btn-warning">Refuser l'entretient</button></a>
+                            <a href=""><button class="btn btn-warning">Refuser l'entretient</button></a>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -243,7 +243,7 @@
                         Cette personne sera refusée, elle ne pourra plus tenter sa chance.
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
-                        <a href="{{ route('recruiters.sessions.permanentRefused', [$Candidate->idSession,$Candidate->idUser]) }}"><button class="btn btn-danger">Refuser définitivement</button></a>
+                        <a href=""><button class="btn btn-danger">Refuser définitivement</button></a>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -41,4 +41,42 @@ class RecruitmentSessionCandidateRegistration extends Model
         return $this->hasOne(User::class,'id','idUser')->get()->first();
     }
 
+    /*
+     * Functions
+     */
+
+    public function GetResultForSessionWebhook(): string
+    {
+        switch ($this->result){
+            case 1:
+                return "Validé";
+                break;
+            case 2:
+                return "Refusé";
+                break;
+            case 3:
+                return "Refus définitif";
+                break;
+            default:
+                return "Oula Problème";
+                break;
+        }
+    }
+
+    public static function GetValidatedApplication($IdSession){
+        return RecruitmentSessionCandidateRegistration::where(['idSession' => $IdSession,'result' => 1])->get();
+    }
+
+    public static function GetCountValidatedUsers($IdSession){
+        return count(RecruitmentSessionCandidateRegistration::where(['idSession' => $IdSession,'result' => 1])->get());
+    }
+
+    public static function GetDeniedApplication($IdSession){
+        return RecruitmentSessionCandidateRegistration::where(['idSession' => $IdSession,'result' => 2])->get();
+    }
+
+    public static function GetPermaDeniedApplication($IdSession){
+        return RecruitmentSessionCandidateRegistration::where(['idSession' => $IdSession,'result' => 3])->get();
+    }
+
 }

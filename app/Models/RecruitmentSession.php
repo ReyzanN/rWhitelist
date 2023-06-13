@@ -71,10 +71,77 @@ class RecruitmentSession extends Model
         return false;
     }
 
-    public static function SessionIsActive($Id){
-        $Check = RecruitmentSession::where(['id' => $Id,'active'=> 1])->get()->first();
-        if (!$Check) { return false; }
+    public static function SessionIsActive($Id)
+    {
+        $Check = RecruitmentSession::where(['id' => $Id, 'active' => 1])->get()->first();
+        if (!$Check) {
+            return false;
+        }
         return $Check;
+    }
+
+    public function GetArrayForRecapWebhook(int $IdSession){
+        $FieldList = array();
+
+        $Temp = new \stdClass();
+        $Temp->name = "Candidat Accepté";
+        $Temp->value = $this->GetCandidateValidatedForWebHook($IdSession);
+        $Temp->inline = false;
+
+        $FieldList[] = $Temp;
+
+        $Temp = new \stdClass();
+        $Temp->name = "Candidat Refusé";
+        $Temp->value = $this->GetCandidateRefusedForWebHook($IdSession);
+        $Temp->inline = false;
+
+        $FieldList[] = $Temp;
+
+        $Temp = new \stdClass();
+        $Temp->name = "Candidat Refusé définitivement";
+        $Temp->value = $this->GetCandidateRefusedPermanentForWebHook($IdSession);
+        $Temp->inline = false;
+
+        $FieldList[] = $Temp;
+
+        $Temp = new \stdClass();
+        $Temp->name = "Statistique";
+        $Temp->value = "Nombre de candidat accepté :".RecruitmentSessionCandidateRegistration::GetCountValidatedUsers($IdSession);
+        $Temp->inline = false;
+
+        $FieldList[] = $Temp;
+
+        return $FieldList;
+    }
+
+    public function GetCandidateValidatedForWebHook(int $IdSession): string{
+        $ValidatedApplication = RecruitmentSessionCandidateRegistration::GetValidatedApplication($IdSession);
+        $String = "";
+
+        foreach ($ValidatedApplication as $Application){
+            $String .= "<@".$Application->GetUser()->discordAccountId.">";
+        }
+        return $String;
+    }
+
+    public function GetCandidateRefusedForWebHook(int $IdSession): string{
+        $ValidatedApplication = RecruitmentSessionCandidateRegistration::GetDeniedApplication($IdSession);
+        $String = "";
+
+        foreach ($ValidatedApplication as $Application){
+            $String .= "<@".$Application->GetUser()->discordAccountId.">";
+        }
+        return $String;
+    }
+
+    public function GetCandidateRefusedPermanentForWebHook(int $IdSession): string{
+        $ValidatedApplication = RecruitmentSessionCandidateRegistration::GetPermaDeniedApplication($IdSession);
+        $String = "";
+
+        foreach ($ValidatedApplication as $Application){
+            $String .= "<@".$Application->GetUser()->discordAccountId.">";
+        }
+        return $String;
     }
 
 }

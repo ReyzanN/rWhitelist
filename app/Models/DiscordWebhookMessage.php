@@ -39,7 +39,7 @@ class DiscordWebhookMessage
                     ],
                     "author" => [
                         "name" => "Classic Roleplay",
-                        "url" => "http://rwhitelist.local/"
+                        "url" => env('APP_URL')
                     ],
                     "fields" => [
                         [
@@ -119,6 +119,43 @@ class DiscordWebhookMessage
         curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_exec($Curl);
         curl_close($Curl);
+    }
+
+    public function SendRecapSession($SessionId,$SessionDate,$SessionCandidate,$SessionCandidateCount,$SessionMaxCandidate,$Creator,$SessionTheme,$FieldList){
+        $TimeStamps = date("c", strtotime("now"));
+        $MessageContent = json_encode([
+            "username" => "Oggy Les Bon Tuyaux",
+            "tts" => false,
+            "embeds" => [
+                [
+                    "title" => "Récapitulatif",
+                    "type" => "rich",
+                    "description" => "Récapitulatif de la session de recrutement N°$SessionId",
+                    "timestamp" => $TimeStamps,
+                    "color" => hexdec( "b56690"),
+                    "footer" => [
+                        "text" => "$Creator",
+                    ],
+                    "author" => [
+                        "name" => "Classic Roleplay",
+                        "url" => env('APP_URL')
+                    ],
+                    "fields" => $FieldList
+                ]
+            ]
+
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+        $Curl = curl_init($this->_Url);
+        curl_setopt($Curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        curl_setopt($Curl, CURLOPT_POST, 1);
+        curl_setopt($Curl, CURLOPT_POSTFIELDS, $MessageContent);
+        curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($Curl, CURLOPT_HEADER, 0);
+        curl_setopt($Curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_exec($Curl);
+        curl_close($Curl);
+        dd($MessageContent);
     }
 
 
