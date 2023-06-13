@@ -113,15 +113,12 @@ class RecruitmentSessionsController extends Controller
         $Check = RecruitmentSession::SessionIsActive($IdSession);
         if (!$Check) { abort(404); }
         $CandidateForSession = $Check->GetCandidateRegistration();
-        $DiscordWebhook = new DiscordWebhookMessage(env('APP_WEB_HOOK_SESSION_RESULT_URL'));
-        $DiscordWebhook->SendRecapSession($Check->id,$Check->sessionDate,$CandidateForSession,count($CandidateForSession),$Check->maxCandidate,auth()->user()->discordUserName,$Check->theme,$Check->GetArrayForRecapWebhook($Check->id));
-        dd('h');
         try {
             foreach ($CandidateForSession as $Candidate){
                 if ($Candidate->result == null){
                     $Candidate->update([
                         'present' => 0,
-                        'result' => 0
+                        'result' => 2
                     ]);
                 }
             }
@@ -130,6 +127,8 @@ class RecruitmentSessionsController extends Controller
                 'closed_by' => auth()->user()->id
             ]);
             Session::flash('Success','La session à été fermée avec succès');
+            $DiscordWebhook = new DiscordWebhookMessage(env('APP_WEB_HOOK_SESSION_RESULT_URL'));
+            $DiscordWebhook->SendRecapSession($Check->id,$Check->sessionDate,$CandidateForSession,count($CandidateForSession),$Check->maxCandidate,auth()->user()->discordUserName,$Check->theme,$Check->GetArrayForRecapWebhook($Check->id));
         }catch (\Exception $e){
             Session::flash('Failure','Une erreur est survenue');
         }

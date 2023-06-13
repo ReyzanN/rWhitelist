@@ -155,7 +155,6 @@ class DiscordWebhookMessage
         curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_exec($Curl);
         curl_close($Curl);
-        dd($MessageContent);
     }
 
 
