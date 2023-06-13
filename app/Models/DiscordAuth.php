@@ -80,7 +80,9 @@ class DiscordAuth
         $this->_DiscordAccountUsername = $ResultClient['username'];
         $this->_DiscordAccountAvatar = $ResultClient['avatar'];
         $this->_DiscordAccountEmail = $ResultClient['email'];
-        $this->ReadUserDiscordRoles();
+        if (!$this->ReadUserDiscordRoles()){
+            return false;
+        }
         return true;
     }
 
@@ -119,7 +121,7 @@ class DiscordAuth
         curl_exec($CurlGiveRole);
     }
 
-    private function ReadUserDiscordRoles() : void
+    private function ReadUserDiscordRoles() : bool
     {
         $ServerID = env("APP_DISCORD_SERVER_ID");
         $DiscordAPITarget = "https://discordapp.com/api/guilds/$ServerID/members/$this->_DiscordAccountId";
@@ -135,7 +137,9 @@ class DiscordAuth
         //--
         $Result = curl_exec($CurlGiveRole);
         $Result = json_decode($Result);
+        if (!property_exists($Result,'roles')){ return false; }
         $this->_DiscordAccountRole = $Result->roles;
+        return true;
     }
 
     /*

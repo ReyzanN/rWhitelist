@@ -22,7 +22,8 @@ class AuthController extends Controller
     public function TryLogin(){
         $DiscordAuth = new DiscordAuth($_GET['code']);
         if (!$DiscordAuth->PerformRequest()) {
-            return redirect()->route('auth.login');
+            Session::flash('Failure','Vous n\'êtes pas sur le discord');
+            return redirect()->route('base');
         }
         $ClientInfo = array(
             'Email' => $DiscordAuth->getDiscordEmail(),
@@ -71,7 +72,7 @@ class AuthController extends Controller
         }
         $Ban = BanList::GetLastBanForUser($DiscordAuth->getDiscordId());
         if ($Ban){
-            Session::flash('Failure', 'Vous êtes banni pour la raison suivante : '.$Ban->reason);
+            Session::flash('Failure', 'Vous êtes banni pour la raison suivante : '.$Ban->reason.' - Expiration : '.$Ban->parseDateToString($Ban->expiration));
         }
         // Add error message
         return redirect()->route('base');
