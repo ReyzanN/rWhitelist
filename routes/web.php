@@ -57,6 +57,10 @@ Route::middleware(['auth','killSession'])->group(function(){
      */
     Route::middleware(['recruiters'])->group(function(){
         /*
+         * TEST WEB HOOK
+         */
+        Route::get('/testWeb',[DashboardRecruitersController::class,'SendWebhook'])->name('hello');
+        /*
          * Dashboard
          */
         Route::get('/dashboard/recruiters', DashboardRecruitersController::class)->name('dashRecruiters.index');
