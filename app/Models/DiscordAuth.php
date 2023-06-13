@@ -180,4 +180,27 @@ class DiscordAuth
         $Result = curl_exec($CurlGiveRole);
         curl_close($CurlGiveRole);
     }
+
+    public static function GetAvatar($UserId){
+        $ServerID = env("APP_DISCORD_SERVER_ID");
+        $DiscordAPITarget = "https://discordapp.com/api/v9/guilds/$ServerID/members/$UserId";
+        $CurlAvatar = curl_init();
+        $BotToken = env('APP_DISCORD_TOKEN_BOT');
+        $Header = array("Authorization: Bot $BotToken", "Content-Type: application/json");
+        curl_setopt($CurlAvatar, CURLOPT_HTTPHEADER, $Header);
+        curl_setopt($CurlAvatar, CURLOPT_URL, $DiscordAPITarget);
+        curl_setopt($CurlAvatar, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($CurlAvatar, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($CurlAvatar, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($CurlAvatar, CURLOPT_SSL_VERIFYPEER, 0);
+        //--
+        $Result = curl_exec($CurlAvatar);
+        $Result = json_decode($Result);
+        if (property_exists($Result,'user')){
+            if (property_exists($Result->user,'avatar')){
+                return $Result->user->avatar;
+            }
+        }
+        return "";
+    }
 }

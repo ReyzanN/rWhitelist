@@ -27,6 +27,11 @@ $(document).ready(function(){
         },
         lengthMenu: [10],
     })
+    $('#CandidateListeForSession').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/fr-FR.json',
+        }
+    })
 });
 
 /*

@@ -18,6 +18,7 @@ class RecruitmentSessionCandidateRegistration extends Model
      * Fillable
      */
     protected $fillable = [
+        "idUser",
         "idSession",
         "validatedBy",
         "backgroundURL",
@@ -34,6 +35,10 @@ class RecruitmentSessionCandidateRegistration extends Model
 
     public function GetValidatedBy(): User {
         return $this->hasOne(User::class,'id','validatedBy')->get()->first();
+    }
+
+    public function GetUser(): User {
+        return $this->hasOne(User::class,'id','idUser')->get()->first();
     }
 
 }

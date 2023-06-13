@@ -125,6 +125,10 @@ Tools
     background-color: #181818 !important;
 }
 
+.bg-blackOpacity75{
+    background-color: rgba(24, 24, 24, 0.75) !important;
+}
+
 #QuestionList_wrapper select, option {
     color: white !important;
 }
@@ -201,4 +205,11 @@ public/dashboard/index
 
 .BlocIndexDashBoard {
     height: 250px;
+}
+
+/*
+Recruiters/session.view
+*/
+#ViewSession {
+    min-height: 100vh;
 }

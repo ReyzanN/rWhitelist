@@ -39,6 +39,15 @@
                                                 <p class="mt-2">{{ $Session->GetCountRegistrationRecruiters() }}</p>
                                             </div>
                                         </div>
+                                        <div class="row d-flex justify-content-center align-items-center mb-2">
+                                            @foreach($Session->RecruitersList as $Re)
+                                                <div>
+                                                    @if($Re->avatar)
+                                                        <img src="https://cdn.discordapp.com/avatars/{{ $Re->GetUser()->discordAccountId }}/{{ $Re->avatar }}" class="rounded-circle border" width="12%" alt="{{ $Re->GetUser()->discordAccountId }}">
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        </div>
                                         <div class="row d-flex justify-content-center align-items-center">
                                             <div class="col-6 d-flex justify-content-center align-items-center">
                                                 @if($Session->RecruitersIsRegisteredForSession(auth()->user()->id))
@@ -48,7 +57,7 @@
                                                 @endif
                                             </div>
                                             <div class="col-6 d-flex justify-content-center align-items-center">
-                                                <button class="btn btn-success bgPurpleButton"><i class="bi bi-eye"></i></button>
+                                                <a href="{{ route('recruiters.viewSession', $Session->id) }}" target="_blank"><button class="btn btn-success bgPurpleButton"><i class="bi bi-eye"></i></button></a>
                                             </div>
                                         </div>
                                     </div>

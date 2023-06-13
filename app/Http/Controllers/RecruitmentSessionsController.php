@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RecruitmentSessionRequest;
+use App\Models\DiscordAuth;
 use App\Models\DiscordWebhookMessage;
 use App\Models\RecruitmentSession;
 use App\Models\RecruitmentSessionRecruiterRegistration;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -20,6 +22,12 @@ class RecruitmentSessionsController extends Controller
      */
     public function __invoke(){
         $ActiveSession = RecruitmentSession::GetActiveSession();
+        foreach ($ActiveSession as $Session){
+            $Session->RecruitersList = $Session->GetRecruitersRegistration();
+            foreach ($Session->RecruitersList as $Recruiter){
+                $Recruiter->avatar = DiscordAuth::GetAvatar($Recruiter->GetUser()->discordAccountId);
+            }
+        }
         return view('recruiters.session.index',['ActiveSession' => $ActiveSession]);
     }
 
@@ -48,6 +56,16 @@ class RecruitmentSessionsController extends Controller
             }
         }
         return redirect()->back();
+    }
+
+    public function ViewSession($IdSession){
+        $Session = RecruitmentSession::SessionIsActive($IdSession);
+        if (!$Session){ abort('404'); }
+        $RecruitersForSession = $Session->GetRecruitersRegistration();
+        foreach ($RecruitersForSession as $ReS){
+            $ReS->avatar = DiscordAuth::GetAvatar($ReS->GetUser()->discordAccountId);
+        }
+        return view('recruiters.session.viewSession',['SessionInformation' => $Session,'Recruiters' => $RecruitersForSession]);
     }
 
     /*
@@ -79,5 +97,13 @@ class RecruitmentSessionsController extends Controller
             Session::flash('Failure','Une erreur est survenue');
         }
         return redirect()->back();
+    }
+
+    public function ViewCandidate(Request $request){
+        $Check = $this->Exist(User::class,$request->only('data')['data']);
+        if (!$Check){
+            abort('404');
+        }
+        return view('recruiters.session.modalContentCandidate', ['Candidate' => $Check]);
     }
 }
