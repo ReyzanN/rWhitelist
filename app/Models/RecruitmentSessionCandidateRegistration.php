@@ -33,7 +33,7 @@ class RecruitmentSessionCandidateRegistration extends Model
         return $this->hasOne(RecruitmentSession::class,'id','idSession')->get()->first();
     }
 
-    public function GetValidatedBy(): User {
+    public function GetValidatedBy(): User|null {
         return $this->hasOne(User::class,'id','validatedBy')->get()->first();
     }
 

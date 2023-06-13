@@ -77,6 +77,8 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Pseudo</th>
                                     <th scope="col">DiscordId</th>
+                                    <th scope="col">Résultat</th>
+                                    <th scope="col">Validé par</th>
                                     <th scope="col">Background</th>
                                     <th scope="col"></th>
                                 </tr>
@@ -87,13 +89,35 @@
                                         <th scope="row">{{ $Candidate->GetUser()->id }}</th>
                                         <td>{{ $Candidate->GetUser()->discordUserName }}</td>
                                         <td>{{ $Candidate->GetUser()->discordAccountId }}</td>
+                                        <td>
+                                            @if($Candidate->result == null)
+                                                <span class="badge text-bg-light">En attente</span>
+                                            @elseif($Candidate->result == 1)
+                                                <span class="badge text-bg-success">Accepté</span>
+                                            @elseif($Candidate->result == 2)
+                                                <span class="badge text-bg-warning">Refus</span>
+                                            @elseif($Candidate->result == 3)
+                                                <span class="badge text-bg-danger">Refus définitif</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($Candidate->GetValidatedBy())
+                                                {{ $Candidate->GetValidatedBy()->discordUserName }}
+                                            @else
+                                                <span>/</span>
+                                            @endif
+
+                                        </td>
                                         <td><a href="{{ $Candidate->backgroundURL }}" target="_blank"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-paperclip"></i></button></a></td>
                                         <td>
-                                            <button class="btn btn-success"><i class="bi bi-check"></i></button>
-                                            <button class="btn btn-warning"><i class="bi bi-question-lg"></i></button>
-                                            <button class="btn btn-danger"><i class="bi bi-x"></i></button>
-                                            <button class="btn btn-danger" onclick="SearchAjax('{{ $Candidate->GetUser()->discordAccountId }}','{{ route('recruiters.session.candidate.call.ajax') }}','MessageAjax', '{{ csrf_token() }}')"><i class="bi bi-bell"></i></button>
-                                            <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#ModalUsers" onclick="SearchAjax('{{ $Candidate->GetUser()->id }}','{{ route('recruiters.session.view.candidate.ajax') }}','ModalInfoCandidate','{{ csrf_token() }}')"><i class="bi bi-eye"></i></button>
+                                            @if(!$Candidate->result)
+                                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ValidUser"><i class="bi bi-check"></i></button>
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#RefusedUser"><i class="bi bi-question-lg"></i></button>
+                                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#PermaRefused"><i class="bi bi-x"></i></button>
+                                                <button class="btn btn-danger" onclick="SearchAjax('{{ $Candidate->GetUser()->discordAccountId }}','{{ route('recruiters.session.candidate.call.ajax') }}','MessageAjax', '{{ csrf_token() }}')"><i class="bi bi-bell"></i></button>
+                                            @else
+                                                <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#ModalUsers" onclick="SearchAjax('{{ $Candidate->GetUser()->id }}','{{ route('recruiters.session.view.candidate.ajax') }}','ModalInfoCandidate','{{ csrf_token() }}')"><i class="bi bi-eye"></i></button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -136,7 +160,7 @@
         </div>
     </div>
 
-    <!-- Confirm en session -->
+    <!-- Confirm end session -->
     <div class="modal fade" id="EndSession" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="EndSessionlabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -154,6 +178,76 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+        <!-- Valid -->
+        <div class="modal fade" id="ValidUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ValidUserLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="ValidUserLabel">Valider l'entretient</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-success" role="alert">
+                            Si vous validez cette personne elle obtiendra le grade whitelist, c'est votre dernier mot ?
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <a href="{{ route('recruiters.sessions.validateCandidate', [$Candidate->idSession,$Candidate->idUser]) }}"><button class="btn btn-success">Valider l'entretient</button></a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Refused -->
+        <div class="modal fade" id="RefusedUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="RefusedUserlabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="RefusedUserlabel">Refuser l'entretient</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning" role="alert">
+                            Cette personne sera refusée, néanmoins elle aura la possibilité de retenter sa chance.
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <a href="{{ route('recruiters.sessions.refusedCandidate', [$Candidate->idSession,$Candidate->idUser]) }}"><button class="btn btn-warning">Refuser l'entretient</button></a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Perma Refused -->
+    <div class="modal fade" id="PermaRefused" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="PermaRefusedLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="PermaRefusedLabel">Refuser de façon permanante l'entretient</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        Cette personne sera refusée, elle ne pourra plus tenter sa chance.
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="{{ route('recruiters.sessions.permanentRefused', [$Candidate->idSession,$Candidate->idUser]) }}"><button class="btn btn-danger">Refuser définitivement</button></a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 </div>
             </div>
         </div>

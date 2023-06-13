@@ -108,6 +108,13 @@ Route::middleware(['auth','killSession'])->group(function(){
         Route::get('/recruiters/sessions/terminate/{IdSession}',[RecruitmentSessionsController::class,'TerminateSession'])->name('recruiters.terminateSession');
 
         /*
+         * Appointment Outcome
+         */
+        Route::get('/recruiters/sessions/validateCandidate/{IdSession}/{IdUser}', [RecruitmentSessionsController::class, 'ValidatedAppointment'])->name('recruiters.sessions.validateCandidate');
+        Route::get('/recruiters/sessions/refusedCandidate/{IdSession}/{IdUser}', [RecruitmentSessionsController::class, 'RefusedAppointment'])->name('recruiters.sessions.refusedCandidate');
+        Route::get('/recruiters/sessions/permanentRefused/{IdSession}/{IdUser}', [RecruitmentSessionsController::class, 'RefusedPermanentAppointment'])->name('recruiters.sessions.permanentRefused');
+
+        /*
          * Ajax
          */
         Route::post('/recruiters/session/view/candidate', [RecruitmentSessionsController::class, 'ViewCandidate'])->name('recruiters.session.view.candidate.ajax');

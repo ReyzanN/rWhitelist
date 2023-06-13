@@ -6,6 +6,7 @@ use App\Http\Requests\RecruitmentSessionRequest;
 use App\Models\DiscordAuth;
 use App\Models\DiscordWebhookMessage;
 use App\Models\RecruitmentSession;
+use App\Models\RecruitmentSessionCandidateRegistration;
 use App\Models\RecruitmentSessionRecruiterRegistration;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -153,4 +154,68 @@ class RecruitmentSessionsController extends Controller
         $DiscordWebhook->SendWebhookCallCandidateAll($AccountToPing);
         return view('recruiters.session.customMessage');
     }
+
+    /*
+     * Appointment Outcome
+     */
+
+    public function ValidatedAppointment($IdSession,$IdUser): \Illuminate\Http\RedirectResponse
+    {
+        $CandidateAppointment = RecruitmentSessionCandidateRegistration::where(['idSession' => $IdSession, 'idUser' => $IdUser])->get()->first();
+        if (!$CandidateAppointment) { abort(404); }
+        if ($CandidateAppointment->result){ abort(404); }
+        try {
+            $CandidateAppointment->update([
+                'validatedBy' => auth()->user()->id,
+                'present' => 1,
+                'result' => 1
+            ]);
+            $User = User::find($CandidateAppointment->idUser);
+            $User->update([
+               'appointment' => 1
+            ]);
+            DiscordAuth::GiveWhitelistRole($User->discordAccountId);
+            Session::flash('Success','Candidature validée');
+        }catch (\Exception $e){
+            Session::flash('Failure','Une erreur est survenue');
+        }
+        return redirect()->back();
+    }
+
+    public function RefusedAppointment($IdSession,$IdUser): \Illuminate\Http\RedirectResponse
+    {
+        $CandidateAppointment = RecruitmentSessionCandidateRegistration::where(['idSession' => $IdSession, 'idUser' => $IdUser])->get()->first();
+        if (!$CandidateAppointment) { abort(404); }
+        if ($CandidateAppointment->result){ abort(404); }
+        try {
+            $CandidateAppointment->update([
+                'validatedBy' => auth()->user()->id,
+                'present' => 1,
+                'result' => 2
+            ]);
+            Session::flash('Success','Candidature refusée');
+        }catch (\Exception $e){
+            Session::flash('Failure','Une erreur est survenue');
+        }
+        return redirect()->back();
+    }
+
+    public function RefusedPermanentAppointment($IdSession,$IdUser): \Illuminate\Http\RedirectResponse
+    {
+        $CandidateAppointment = RecruitmentSessionCandidateRegistration::where(['idSession' => $IdSession, 'idUser' => $IdUser])->get()->first();
+        if (!$CandidateAppointment) { abort(404); }
+        if ($CandidateAppointment->result){ abort(404); }
+        try {
+            $CandidateAppointment->update([
+                'validatedBy' => auth()->user()->id,
+                'present' => 1,
+                'result' => 3
+            ]);
+            Session::flash('Success','Candidature refusée de façon permanante');
+        }catch (\Exception $e){
+            Session::flash('Failure','Une erreur est survenue');
+        }
+        return redirect()->back();
+    }
+
 }
