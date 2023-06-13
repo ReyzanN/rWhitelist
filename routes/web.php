@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardRecruitersController;
 use App\Http\Controllers\HomePublicController;
 use App\Http\Controllers\QCMCandidateController;
 use App\Http\Controllers\QCMController;
+use App\Http\Controllers\RecruitmentSessionsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -59,7 +60,7 @@ Route::middleware(['auth','killSession'])->group(function(){
         /*
          * TEST WEB HOOK
          */
-        Route::get('/testWeb',[DashboardRecruitersController::class,'SendWebhook'])->name('hello');
+        //Route::get('/testWeb',[DashboardRecruitersController::class,'SendWebhook'])->name('hello');
         /*
          * Dashboard
          */
@@ -93,6 +94,12 @@ Route::middleware(['auth','killSession'])->group(function(){
              */
             Route::post('/recruiters/qcm/question/type/update/ajax', [QCMController::class, 'SearchQuestionTypeID'])->name('qcm.questionType.ajax.update');
             Route::post('/recruiters/qcm/question/update/ajax', [QCMController::class, 'SearchQuestionFirstChanceID'])->name('qcm.questionFirstChance.ajax.update');
+
+        /*
+         * Sessions Management
+         */
+        Route::get('/recruiters/sessions/', RecruitmentSessionsController::class)->name('recruiters.sessions.view');
+        Route::post('/recruiters/sessions/add', [RecruitmentSessionsController::class,'AddSession'])->name('recruiters.sessions.add');
 
         /*
          * Ban List

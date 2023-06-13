@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,6 +36,29 @@ class RecruitmentSession extends Model
 
     public function GetCreatedBy(): User {
         return $this->hasOne(User::class,'id','created_by')->get()->first();
+    }
+
+    public function GetCandidateRegistration() :Collection {
+        return $this->hasMany(RecruitmentSessionCandidateRegistration::class,'idSession','id')->get();
+    }
+
+    public function GetRecruitersRegistration(): Collection {
+        return $this->hasMany(RecruitmentSessionRecruiterRegistration::class,'idSession','id')->get();
+    }
+    /*
+     * Functions
+     */
+    public static function GetActiveSession(): Collection {
+        return RecruitmentSession::where(['active' => 1])->get();
+    }
+
+    public function GetCountRegistrationCandidate(): int
+    {
+        return count($this->GetCandidateRegistration());
+    }
+
+    public function GetCountRegistrationRecruiters(): int {
+        return count($this->GetRecruitersRegistration());
     }
 
 }
