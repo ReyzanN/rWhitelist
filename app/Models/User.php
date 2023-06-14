@@ -69,6 +69,11 @@ class User extends Authenticatable
         return $this->hasMany(BanList::class,'discordAccountId','discordAccountId')->get();
     }
 
+    public function GetRecruitmentRegistration(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->hasMany(RecruitmentSessionCandidateRegistration::class,'idUser','id')->get();
+    }
+
     /* --- */
 
     public static function checkAccount(string $DiscordIDAccount) : bool {

@@ -138,26 +138,55 @@
     <div class="col-12">
         <p>Session Du Candidat</p>
         <hr>
-        <table class="table text-white">
+        <table class="table text-white text-center">
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">État</th>
-                <th scope="col">Date de réalisation</th>
-                <th scope="col">Score</th>
-                <th scope="col"></th>
+                <th scope="col">Date</th>
+                <th scope="col">Jugé par</th>
+                <th scope="col">Background</th>
+                <th scope="col">Présent</th>
+                <th scope="col">Résultat</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Corrigé</td>
-                <td>2023/10/04 - 14H24</td>
-                <td>8/10</td>
-                <td>
-                    <button class="btn btn-primary bgPurpleButton"><i class="bi bi-eye"></i></button>
-                </td>
-            </tr>
+            @foreach($Candidate->GetRecruitmentRegistration() as $SessionCandidate)
+                <tr>
+                    <th scope="row">{{ $SessionCandidate->GetSession()->id }}</th>
+                    <td>{{ $SessionCandidate->GetSession()->parseDateToString($SessionCandidate->GetSession()->SessionDate) }}</td>
+                    <td>
+                        @if($SessionCandidate->GetValidatedBy())
+                            {{ $SessionCandidate->GetValidatedBy()->discordUserName }}
+                        @else
+                            Session en cours
+                        @endif
+                    </td>
+                    <td><a href="{{ $SessionCandidate->backgroundURL }}" target="_blank"><button class="btn btn-success bgPurpleButton"><i class="bi bi-paperclip"></i></button></a></td>
+                    <td>
+                        @if(!$SessionCandidate->present)
+                            <span class="badge text-bg-danger">Non</span>
+                        @else
+                            <span class="badge text-bg-success">Oui</span>
+                        @endif
+                    </td>
+                    <td>
+                        @switch($SessionCandidate->result)
+                            @case(0)
+                                <span class="badge text-bg-secondary">Session En cours</span>
+                                @break
+                            @case(1)
+                                <span class="badge text-bg-success">Session validée</span>
+                                @break
+                            @case(2)
+                                <span class="badge text-bg-warning">Refusé</span>
+                                @break
+                            @case(3)
+                                <span class="badge text-bg-danger">Refusé définitivement</span>
+                                @break
+                        @endswitch
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

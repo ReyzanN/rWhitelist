@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RecruitmentSessionCandidateRegistration extends Model
 {
-    use HasFactory;
+    use HasFactory, tools;
 
     /*
      * Table
