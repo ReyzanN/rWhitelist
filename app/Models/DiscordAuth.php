@@ -102,6 +102,7 @@ class DiscordAuth
         //--
         $Result = curl_exec($CurlGiveRole);
         $Result = json_decode($Result,true);
+        dd($Result);
     }
 
     public static function RevokeWhiteListRole(string $UserDiscordID) :void {
