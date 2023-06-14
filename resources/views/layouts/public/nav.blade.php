@@ -24,14 +24,12 @@
         <div class="row">
             <p class="text-uppercase text-light text-opacity-75 text-center">whitelist</p>
             <ul class="text-center poppins">
-                @if(!auth()->user()->isWl())
-                    <li class="list-group-item">
-                        <a href="{{ route('qcm.candidate.index') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-patch-question"></i>&nbsp;QCM</a>
-                    </li>
-                    <li class="list-group-item mt-2">
-                        <a href="{{ route('candidate.sessions.view') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-clock"></i>&nbsp;Sessions</a>
-                    </li>
-                @endif
+                <li class="list-group-item">
+                    <a href="{{ route('qcm.candidate.index') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-patch-question"></i>&nbsp;QCM</a>
+                </li>
+                <li class="list-group-item mt-2">
+                    <a href="{{ route('candidate.sessions.view') }}" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-clock"></i>&nbsp;Sessions</a>
+                </li>
                 <li class="list-group-item mt-2">
                     <a href="#" class="link-underline link-underline-opacity-0 text-white HoverLinkCustomColor"><i class="bi bi-people"></i>&nbsp;Demande de parrainage</a>
                 </li>
