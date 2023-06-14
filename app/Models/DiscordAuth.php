@@ -138,7 +138,6 @@ class DiscordAuth
         $Result = curl_exec($CurlGiveRole);
         $Result = json_decode($Result);
         if (!property_exists($Result,'roles')){ return false; }
-        dd($Result);
         $this->_DiscordAccountRole = $Result->roles;
         return true;
     }
