@@ -15,9 +15,4 @@ class DashboardRecruitersController extends Controller
     public function __invoke(){
         return view('recruiters.dashboard.index');
     }
-
-    public function SendWebhook() {
-        $Message = new DiscordWebhookMessage(env('APP_WEB_HOOK_SESSION_URL'));
-        $Message->SendWebhookRecruitementSession();
-    }
 }
