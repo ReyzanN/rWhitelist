@@ -43,7 +43,9 @@ class CandidateManagementController extends Controller
             DiscordAuth::RevokeWhiteListRole($DiscordIDAccount);
             $User = User::findByDiscord($DiscordIDAccount);
             $UserRank = UserRank::where(['userId' => $User->id, 'roleId' => env('APP_DISCORD_WL')])->get()->first();
-            $UserRank->delete();
+            if ($UserRank) {
+                $UserRank->delete();
+            }
             Session::flash('Success','Grade supprimé');
         }catch (\Exception $e){
             Session::flash('Failure','Une erreur est survenue');
