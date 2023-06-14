@@ -53,7 +53,7 @@
     <div class="col-6">
         <div class="input-group mb-3">
             <span class="input-group-text" id="addon3">Date de naissance</span>
-            <input type="text" class="form-control" aria-describedby="addon3" value="{{ $Candidate->parseDateToString($Candidate->birthdate) }}" readonly>
+            <input type="text" class="form-control" aria-describedby="addon3" value="@if($Candidate->birthdate) {{ $Candidate->parseDateToString($Candidate->birthdate) }} @endif" readonly>
         </div>
     </div>
 </div>
