@@ -32,6 +32,12 @@ $(document).ready(function(){
             url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/fr-FR.json',
         }
     })
+    $('#TableSessionCandidate').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/fr-FR.json',
+        },
+        lengthMenu: [3],
+    })
 });
 
 /*
@@ -101,6 +107,19 @@ if (PermaRefused) {
         let Button = event.relatedTarget
         let Link = Button.getAttribute('data-bs-link')
         //--
-        let LinkHref = document.getElementById('PermanentRefused').href = Link
+        let LinkHref = document.getElementById('PermanentRefusedLink').href = Link
+    })
+}
+
+/*
+ Modal Conform Registration Candidate Session
+ */
+let ConformationSession = document.getElementById('ConformationSession')
+if (ConformationSession) {
+    ConformationSession.addEventListener('show.bs.modal', event => {
+        let Button = event.relatedTarget
+        let IdSession = Button.getAttribute('data-bs-session')
+        //--
+        let Input = document.getElementById('idSessionInput').value = IdSession
     })
 }

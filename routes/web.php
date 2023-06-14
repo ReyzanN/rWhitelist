@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardRecruitersController;
 use App\Http\Controllers\HomePublicController;
 use App\Http\Controllers\QCMCandidateController;
 use App\Http\Controllers\QCMController;
+use App\Http\Controllers\RecruitmentSessionCandidateController;
 use App\Http\Controllers\RecruitmentSessionsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,15 @@ Route::middleware(['auth','killSession'])->group(function(){
          */
         Route::post('/qcm/candidate/apply/ajax', [QCMCandidateController::class,'GetQCM'])->name('qcm.candidate.getQCM.ajax');
         Route::post('/qcm/candidate/continue/', [QCMCandidateController::class,'ContinueQCM'])->name('qcm.candidate.continue.ajax');
+
+    /*
+     * Sessions
+     */
+    Route::get('/sessions/',RecruitmentSessionCandidateController::class)->name('candidate.sessions.view');
+
+    Route::get('/sessions/unregister/{SessionId}', [RecruitmentSessionCandidateController::class, 'UnRegisterForSession'])->name('candidate.sessions.unregister');
+
+    Route::post('/sessions/register', [RecruitmentSessionCandidateController::class,'RegisterForSession'])->name('candidate.sessions.register');
 
     /*
      * Recruiters Route

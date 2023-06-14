@@ -244,7 +244,7 @@
                         Cette personne sera refusée, elle ne pourra plus tenter sa chance.
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
-                        <a href="" id="PermanentRefused"><button class="btn btn-danger">Refuser définitivement</button></a>
+                        <a href="" id="PermanentRefusedLink"><button class="btn btn-danger">Refuser définitivement</button></a>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 
 class RecruitmentSession extends Model
 {
@@ -52,6 +53,11 @@ class RecruitmentSession extends Model
         return RecruitmentSession::where(['active' => 1])->get();
     }
 
+    public static function GetActiveSessionNotBegan() : Collection
+    {
+        return RecruitmentSession::where(['active' => 1])->where('SessionDate', '>' ,new \DateTime())->get();
+    }
+
     public function GetCountRegistrationCandidate(): int
     {
         return count($this->GetCandidateRegistration());
@@ -68,6 +74,18 @@ class RecruitmentSession extends Model
                 return true;
             }
         }
+        return false;
+    }
+
+    public function SessionIsFull():bool {
+        if ($this->GetCountRegistrationCandidate() >= $this->maxCandidate) { return true; }
+        return false;
+    }
+
+    public function hasBegin():bool {
+        $DateSession = new \DateTime($this->SessionDate);
+        $DateNow = new \DateTime();
+        if ($DateNow > $DateSession){ return true; }
         return false;
     }
 
@@ -142,6 +160,30 @@ class RecruitmentSession extends Model
             $String .= "<@".$Application->GetUser()->discordAccountId.">";
         }
         return $String;
+    }
+
+    public static function UserCanUnRegisterForSessionStatic($IdSession): bool
+    {
+        $Session = RecruitmentSession::SessionIsActive($IdSession);
+        if (!$Session) { abort(404); }
+        $DateMinus2Hour = date('Y-m-d H:i:s', strtotime($Session->SessionDate.' - 2 hour'));
+        $DateMinus2Hour = new \DateTime($DateMinus2Hour);
+        if (new \DateTime() > $DateMinus2Hour){
+            return false;
+        }
+        return true;
+    }
+
+    public function UserCanUnRegisterForSession(): bool
+    {
+        $Session = RecruitmentSession::SessionIsActive($this->id);
+        if (!$Session) { abort(404); }
+        $DateMinus2Hour = date('Y-m-d H:i:s', strtotime($Session->SessionDate.' - 2 hour'));
+        $DateMinus2Hour = new \DateTime($DateMinus2Hour);
+        if (new \DateTime() > $DateMinus2Hour){
+            return false;
+        }
+        return true;
     }
 
 }

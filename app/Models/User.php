@@ -190,5 +190,13 @@ class User extends Authenticatable
         return 0;
     }
 
+    public function CanApplyForAppointment(): bool{
+        if (!auth()->user()->qcm) { return false;}
+        if (!auth()->user()->steamId || !auth()->user()->birthdate) { return false; }
+        $CheckForSession = RecruitmentSessionCandidateRegistration::where(['idUser' => auth()->user()->id, 'result' => null ])->get();
+        if (count($CheckForSession) >= 1) { return false; }
+        return true;
+    }
+
 
 }
