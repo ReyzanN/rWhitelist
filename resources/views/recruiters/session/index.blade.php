@@ -9,8 +9,9 @@
             <div class="row col-9 d-flex justify-content-around poppins">
                 <div class="col-11 rounded d-flex flex-column">
                     <div class="row d-flex justify-content-center align-items-center mt-2">
-                        <div class="col-4 d-flex justify-content-center align-items-center">
+                        <div class="col-4 d-flex justify-content-between align-items-center">
                             <button class="btn btn-primary bgPurpleButton text-uppercase" data-bs-toggle="modal" data-bs-target="#AddSession">Cree une session</button>
+                            <button class="btn btn-primary bgPurpleButton text-uppercase" data-bs-toggle="modal" data-bs-target="#ViewArchives">Voir les archives</button>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-around mt-3">
@@ -114,6 +115,50 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ViewArchives" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ViewArchivesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-black text-white">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ViewArchivesLabel">Archives de sessions</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table text-white text-center" id="TableArchiveSession">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Date de la session</th>
+                                <th scope="col">Nombre de candidat</th>
+                                <th scope="col">Thème</th>
+                                <th scope="col">Crée par</th>
+                                <th scope="col">Terminée par</th>
+                                <th scope="col">Date de création</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($ArchivedSession as $Session)
+                                <tr>
+                                    <td>#{{ $Session->id }}</td>
+                                    <td>{{ $Session->SessionDate }}</td>
+                                    <td>{{ $Session->maxCandidate }}</td>
+                                    <td>{{ $Session->theme }}</td>
+                                    <td>{{ $Session->GetCreatedBy()->discordUserName }}</td>
+                                    <td>{{ $Session->GetClosedByUser()->discordUserName }}</td>
+                                    <td>{{ $Session->parseDateToString($Session->created_at) }}</td>
+                                    <td><a href="{{ route('recruiters.viewSession', $Session->id) }}" target="_blank"><button class="btn btn-success bgPurpleButton"><i class="bi bi-eye"></i></button></a></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>

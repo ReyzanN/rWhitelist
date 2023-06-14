@@ -23,13 +23,14 @@ class RecruitmentSessionsController extends Controller
      */
     public function __invoke(){
         $ActiveSession = RecruitmentSession::GetActiveSession();
+        $ArchivedSession = RecruitmentSession::GetNonActiveSession();
         foreach ($ActiveSession as $Session){
             $Session->RecruitersList = $Session->GetRecruitersRegistration();
             foreach ($Session->RecruitersList as $Recruiter){
                 $Recruiter->avatar = DiscordAuth::GetAvatar($Recruiter->GetUser()->discordAccountId);
             }
         }
-        return view('recruiters.session.index',['ActiveSession' => $ActiveSession]);
+        return view('recruiters.session.index',['ActiveSession' => $ActiveSession,'ArchivedSession' => $ArchivedSession]);
     }
 
     public function AddSession(RecruitmentSessionRequest $request): \Illuminate\Http\RedirectResponse
@@ -61,7 +62,15 @@ class RecruitmentSessionsController extends Controller
 
     public function ViewSession($IdSession){
         $Session = RecruitmentSession::SessionIsActive($IdSession);
-        if (!$Session){ abort('404'); }
+        if (!$Session){
+            $SessionUnActive = RecruitmentSession::SessionIsNotActive($IdSession);
+            if (!$SessionUnActive){ abort(404); };
+            $RecruitersForSession = $SessionUnActive->GetRecruitersRegistration();
+            foreach ($RecruitersForSession as $ReS){
+                $ReS->avatar = DiscordAuth::GetAvatar($ReS->GetUser()->discordAccountId);
+            }
+            return view('recruiters.session.viewUnActiveSession',['SessionInformation' => $SessionUnActive,'Recruiters' => $RecruitersForSession]);
+        }
         $RecruitersForSession = $Session->GetRecruitersRegistration();
         foreach ($RecruitersForSession as $ReS){
             $ReS->avatar = DiscordAuth::GetAvatar($ReS->GetUser()->discordAccountId);

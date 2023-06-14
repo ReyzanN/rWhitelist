@@ -58,6 +58,10 @@ class RecruitmentSession extends Model
         return RecruitmentSession::where(['active' => 1])->where('SessionDate', '>' ,new \DateTime())->get();
     }
 
+    public static function GetNonActiveSession(): Collection {
+        return RecruitmentSession::where(['active' => 0])->get();
+    }
+
     public function GetCountRegistrationCandidate(): int
     {
         return count($this->GetCandidateRegistration());
@@ -92,6 +96,15 @@ class RecruitmentSession extends Model
     public static function SessionIsActive($Id)
     {
         $Check = RecruitmentSession::where(['id' => $Id, 'active' => 1])->get()->first();
+        if (!$Check) {
+            return false;
+        }
+        return $Check;
+    }
+
+    public static function SessionIsNotActive($Id)
+    {
+        $Check = RecruitmentSession::where(['id' => $Id, 'active' => 0])->get()->first();
         if (!$Check) {
             return false;
         }

@@ -169,6 +169,14 @@ Tools
     color: white !important;
 }
 
+#TableArchiveSession_wrapper select,option {
+    color: white !important;
+}
+
+#TableArchiveSession_filter input {
+    color: white !important;
+}
+
 /*
 Public/auth/index
 */
