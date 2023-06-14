@@ -111,9 +111,9 @@
                                         <td><a href="{{ $Candidate->backgroundURL }}" target="_blank"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-paperclip"></i></button></a></td>
                                         <td>
                                             @if(!$Candidate->result)
-                                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ValidUser"><i class="bi bi-check"></i></button>
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#RefusedUser"><i class="bi bi-question-lg"></i></button>
-                                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#PermaRefused"><i class="bi bi-x"></i></button>
+                                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ValidUser" data-bs-link="{{ route('recruiters.sessions.validateCandidate',[$Candidate->idSession, $Candidate->GetUser()->id]) }}"><i class="bi bi-check"></i></button>
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#RefusedUser" data-bs-link="{{ route('recruiters.sessions.refusedCandidate',[$Candidate->idSession, $Candidate->GetUser()->id]) }}"><i class="bi bi-question-lg"></i></button>
+                                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#PermaRefused" data-bs-link="{{ route('recruiters.sessions.permanentRefused',[$Candidate->idSession, $Candidate->GetUser()->id]) }}"><i class="bi bi-x"></i></button>
                                                 <button class="btn btn-danger" onclick="SearchAjax('{{ $Candidate->GetUser()->discordAccountId }}','{{ route('recruiters.session.candidate.call.ajax') }}','MessageAjax', '{{ csrf_token() }}')"><i class="bi bi-bell"></i></button>
                                             @else
                                                 <button class="btn btn-primary bgPurpleButton" data-bs-toggle="modal" data-bs-target="#ModalUsers" onclick="SearchAjax('{{ $Candidate->GetUser()->id }}','{{ route('recruiters.session.view.candidate.ajax') }}','ModalInfoCandidate','{{ csrf_token() }}')"><i class="bi bi-eye"></i></button>
@@ -197,7 +197,7 @@
                             Si vous validez cette personne elle obtiendra le grade whitelist, c'est votre dernier mot ?
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
-                            <a href=""><button class="btn btn-success">Valider l'entretient</button></a>
+                            <a href="" id="ValidUserLink"><button class="btn btn-success">Valider l'entretient</button></a>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -220,7 +220,7 @@
                             Cette personne sera refusée, néanmoins elle aura la possibilité de retenter sa chance.
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
-                            <a href=""><button class="btn btn-warning">Refuser l'entretient</button></a>
+                            <a href="" id="RefusedLink"><button class="btn btn-warning">Refuser l'entretient</button></a>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -243,7 +243,7 @@
                         Cette personne sera refusée, elle ne pourra plus tenter sa chance.
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
-                        <a href=""><button class="btn btn-danger">Refuser définitivement</button></a>
+                        <a href="" id="PermanentRefused"><button class="btn btn-danger">Refuser définitivement</button></a>
                     </div>
                 </div>
                 <div class="modal-footer">

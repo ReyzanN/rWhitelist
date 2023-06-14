@@ -62,3 +62,45 @@ if (ModalUpdateBan) {
         let ExpirationBan = document.getElementById('ExpirationBan').value = Expiration
     })
 }
+
+/*
+Modal outcome appointment
+*/
+    /*
+    Valid
+     */
+let ModalValid = document.getElementById('ValidUser')
+if (ModalValid) {
+    ModalValid.addEventListener('show.bs.modal', event => {
+        let Button = event.relatedTarget
+        let Link = Button.getAttribute('data-bs-link')
+        //--
+        let LinkHref = document.getElementById('ValidUserLink').href = Link
+    })
+}
+
+    /*
+    Refused
+     */
+let RefusedUser = document.getElementById('RefusedUser')
+if (RefusedUser) {
+    RefusedUser.addEventListener('show.bs.modal', event => {
+        let Button = event.relatedTarget
+        let Link = Button.getAttribute('data-bs-link')
+        //--
+        let LinkHref = document.getElementById('RefusedLink').href = Link
+    })
+}
+
+    /*
+    Refused Permanent
+     */
+let PermaRefused = document.getElementById('PermaRefused')
+if (PermaRefused) {
+    PermaRefused.addEventListener('show.bs.modal', event => {
+        let Button = event.relatedTarget
+        let Link = Button.getAttribute('data-bs-link')
+        //--
+        let LinkHref = document.getElementById('PermanentRefused').href = Link
+    })
+}
