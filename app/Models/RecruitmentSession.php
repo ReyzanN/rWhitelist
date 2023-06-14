@@ -177,7 +177,7 @@ class RecruitmentSession extends Model
     public function UserCanUnRegisterForSession(): bool
     {
         $Session = RecruitmentSession::SessionIsActive($this->id);
-        if (!$Session) { abort(404); }
+        if (!$Session) { return false; }
         $DateMinus2Hour = date('Y-m-d H:i:s', strtotime($Session->SessionDate.' - 2 hour'));
         $DateMinus2Hour = new \DateTime($DateMinus2Hour);
         if (new \DateTime() > $DateMinus2Hour){

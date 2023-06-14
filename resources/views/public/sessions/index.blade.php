@@ -43,32 +43,34 @@
                                 </thead>
                                 <tbody>
                                     @foreach(auth()->user()->GetRecruitmentRegistration() as $SessionCandidate)
-                                        <td>{{ $SessionCandidate->parseDateToString($SessionCandidate->GetSession()->SessionDate) }}</td>
-                                        <td>{{ $SessionCandidate->GetSession()->theme }}</td>
-                                        <td><a href="{{ $SessionCandidate->backgroundURL }}" target="_blank"><button class="btn btn-success bgPurpleButton"><i class="bi bi-paperclip"></i></button></a></td>
-                                        <td>
-                                            @switch($SessionCandidate->result)
-                                                @case(0)
-                                                    <span class="badge text-bg-secondary">Session En cours</span>
-                                                    @break
-                                                @case(1)
-                                                    <span class="badge text-bg-success">Session validée</span>
-                                                    @break
-                                                @case(2)
-                                                    <span class="badge text-bg-warning">Refusé</span>
-                                                    @break
-                                                @case(3)
-                                                    <span class="badge text-bg-danger">Refusé définitivement</span>
-                                                    @break
-                                            @endswitch
-                                        </td>
-                                        <td>
-                                            @if(!$SessionCandidate->GetSession()->UserCanUnRegisterForSession())
-                                                <button class="btn btn-warning" type="button" disabled>Me désinscrire</button>
-                                            @else
-                                                <a href="{{ route('candidate.sessions.unregister', $SessionCandidate->GetSession()->id) }}"><button class="btn btn-warning">Me désinscrire</button></a>
-                                            @endif
-                                        </td>
+                                        <tr>
+                                            <td>{{ $SessionCandidate->parseDateToString($SessionCandidate->GetSession()->SessionDate) }}</td>
+                                            <td>{{ $SessionCandidate->GetSession()->theme }}</td>
+                                            <td><a href="{{ $SessionCandidate->backgroundURL }}" target="_blank"><button class="btn btn-success bgPurpleButton"><i class="bi bi-paperclip"></i></button></a></td>
+                                            <td>
+                                                @switch($SessionCandidate->result)
+                                                    @case(0)
+                                                        <span class="badge text-bg-secondary">Session En cours</span>
+                                                        @break
+                                                    @case(1)
+                                                        <span class="badge text-bg-success">Session validée</span>
+                                                        @break
+                                                    @case(2)
+                                                        <span class="badge text-bg-warning">Refusé</span>
+                                                        @break
+                                                    @case(3)
+                                                        <span class="badge text-bg-danger">Refusé définitivement</span>
+                                                        @break
+                                                @endswitch
+                                            </td>
+                                            <td>
+                                                @if(!$SessionCandidate->GetSession()->UserCanUnRegisterForSession())
+                                                    <button class="btn btn-warning" type="button" disabled>Me désinscrire</button>
+                                                @else
+                                                    <a href="{{ route('candidate.sessions.unregister', $SessionCandidate->GetSession()->id) }}"><button class="btn btn-warning">Me désinscrire</button></a>
+                                                @endif
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
