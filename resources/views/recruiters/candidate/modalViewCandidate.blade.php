@@ -106,6 +106,7 @@
                 <th scope="col">État</th>
                 <th scope="col">Date de réalisation</th>
                 <th scope="col">Score</th>
+                <th scope="col">Corrigé par</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -124,6 +125,7 @@
                     </td>
                     <td>{{ $QCMApplication->parseDateToString($QCMApplication->updated_at) }}</td>
                     <td>{{ $QCMApplication->GetNoteForQCM() }}</td>
+                    <td>{{ $QCMApplication->GetGradedBy()->discordUserName }}</td>
                     <td><a href="{{ route('qcm.beginCorrection',$QCMApplication->id) }}" target="_blank"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-eye"></i></button></a></td>
                 </tr>
             @endforeach

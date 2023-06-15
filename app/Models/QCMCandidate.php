@@ -29,6 +29,10 @@ class QCMCandidate extends Model
         return $this->hasMany(QCMCandidateAnswer::class,'idQCMCandidate','id')->get();
     }
 
+    public function GetGradedBy(){
+        return $this->hasOne(User::class, 'id', 'idUser')->get()->first();
+    }
+
     public static function GetActiveQCMForAuthUser(){
         return QCMCandidate::where(['idUser' => auth()->user()->id, 'active' => 1])->get()->first();
     }
