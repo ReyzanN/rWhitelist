@@ -177,6 +177,10 @@ Tools
     color: white !important;
 }
 
+select option {
+    color: black !important;
+}
+
 /*
 Public/auth/index
 */
