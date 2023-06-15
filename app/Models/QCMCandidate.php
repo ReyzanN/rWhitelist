@@ -40,39 +40,49 @@ class QCMCandidate extends Model
     /*
      * Functions
      */
-    public static function createQCMForCandidate(){
-        $QCMCandidate = QCMCandidate::create([
-            'idUser' => auth()->user()->id,
-            'active' => 1,
-            'graded' => 0
-        ]);
+    public static function EnoughQCMQuestion(){
         $QCMQuestionList = QuestionFirstChance::getActiveQuestions();
         $CountQuestion = count($QCMQuestionList);
-        $QCMQuestionForCandidate = array();
-        /*
-         * Randomize number
-         */
-        do{
-            $RandomNumber = random_int(0,$CountQuestion-1);
-            if (!in_array($RandomNumber,$QCMQuestionForCandidate)){
-                $QCMQuestionForCandidate[] = $RandomNumber;
-            }
-        }while(count($QCMQuestionForCandidate) < env('APP_WHITELIST_QCM_QUESTION'));
-        /*
-         * Sort Questions
-         */
-        foreach ($QCMQuestionForCandidate as $Key => $Value){
-            $QCMQuestionForCandidate[$Key] = $QCMQuestionList[$Value];
-        }
-        foreach ($QCMQuestionForCandidate as $Question){
-            QCMCandidateAnswer::create([
-                'idQCMCandidate' => $QCMCandidate->id,
-                'idQuestion' => $Question->id,
-                'answer' => "",
-                'status' => 0
+        if ($CountQuestion < env('APP_WHITELIST_QCM_QUESTION')) { return false;}
+        return true;
+    }
+
+    public static function createQCMForCandidate(){
+        if (QCMCandidate::EnoughQCMQuestion()) {
+            $QCMQuestionList = QuestionFirstChance::getActiveQuestions();
+            $CountQuestion = count($QCMQuestionList);
+            $QCMCandidate = QCMCandidate::create([
+                'idUser' => auth()->user()->id,
+                'active' => 1,
+                'graded' => 0
             ]);
+            $QCMQuestionForCandidate = array();
+            /*
+             * Randomize number
+             */
+            do {
+                $RandomNumber = random_int(0, $CountQuestion - 1);
+                if (!in_array($RandomNumber, $QCMQuestionForCandidate)) {
+                    $QCMQuestionForCandidate[] = $RandomNumber;
+                }
+            } while (count($QCMQuestionForCandidate) < env('APP_WHITELIST_QCM_QUESTION'));
+            /*
+             * Sort Questions
+             */
+            foreach ($QCMQuestionForCandidate as $Key => $Value) {
+                $QCMQuestionForCandidate[$Key] = $QCMQuestionList[$Value];
+            }
+            foreach ($QCMQuestionForCandidate as $Question) {
+                QCMCandidateAnswer::create([
+                    'idQCMCandidate' => $QCMCandidate->id,
+                    'idQuestion' => $Question->id,
+                    'answer' => "",
+                    'status' => 0
+                ]);
+            }
+            return $QCMQuestionForCandidate = QCMCandidateAnswer::where(['idQCMCandidate' => $QCMCandidate->id])->get();
         }
-        return $QCMQuestionForCandidate = QCMCandidateAnswer::where(['idQCMCandidate' => $QCMCandidate->id])->get();
+        return "";
     }
 
     public function GetNoteForQCM(): int

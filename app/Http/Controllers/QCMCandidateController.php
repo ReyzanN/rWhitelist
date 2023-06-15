@@ -57,6 +57,9 @@ class QCMCandidateController extends Controller
             return view('public.qcm.errorPage',['Error' => $Message]);
         }
         $QuestionsList = QCMCandidate::createQCMForCandidate();
+        if (!$QuestionsList){
+            return view('public.qcm.ajaxModalContentQCMErrors');
+        }
         $QCM = $QuestionsList[0]->QCMCandidate();
         return view('public.qcm.ajaxModalContentQCM',['QuestionsList' => $QuestionsList, 'QCM' => $QCM]);
     }
