@@ -18,7 +18,8 @@ class CandidateManagementController extends Controller
 
     public function RecruitersCandidateManagementIndex(){
         $Candidate = User::all();
-        return view('recruiters.candidate.index', ['Candidate' => $Candidate]);
+        $WlCount = User::GetCountWl();
+        return view('recruiters.candidate.index', ['Candidate' => $Candidate,'WlCount' => $WlCount]);
     }
 
     public function ForceWhiteList($DiscordIDAccount): \Illuminate\Http\RedirectResponse

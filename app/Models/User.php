@@ -198,5 +198,9 @@ class User extends Authenticatable
         return true;
     }
 
+    public static function GetCountWl(){
+        return count(UserRank::where(['roleId' => env('APP_DISCORD_WL')])->get());
+    }
+
 
 }

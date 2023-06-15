@@ -13,8 +13,7 @@
                     </div>
                     <div class="row d-flex">
                         <div class="d-flex flex-row justify-content-around align-items-center">
-                            <p><span class="badge text-bg-light">Nombre de candidat : 12</span></p>
-                            <p><span class="badge text-bg-light">Nombre de personne WL : 0</span></p>
+                            <p><span class="badge text-bg-light">Nombre de personne WL : {{ $WlCount }}</span></p>
                         </div>
                         <hr class="mx-2 w-25">
                     </div>
