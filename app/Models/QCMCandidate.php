@@ -30,7 +30,7 @@ class QCMCandidate extends Model
     }
 
     public function GetGradedBy(){
-        return $this->hasOne(User::class, 'id', 'idUser')->get()->first();
+        return $this->hasOne(User::class, 'id', 'gradedBy')->get()->first();
     }
 
     public static function GetActiveQCMForAuthUser(){

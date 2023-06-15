@@ -125,7 +125,13 @@
                     </td>
                     <td>{{ $QCMApplication->parseDateToString($QCMApplication->updated_at) }}</td>
                     <td>{{ $QCMApplication->GetNoteForQCM() }}</td>
-                    <td>{{ $QCMApplication->GetGradedBy()->discordUserName }}</td>
+                    <td>
+                        @if($QCMApplication->GetGradedBy())
+                            {{ $QCMApplication->GetGradedBy()->discordUserName }}
+                        @else
+                            <span class="badge text-bg-warning">En attente de correction</span>
+                        @endif
+                    </td>
                     <td><a href="{{ route('qcm.beginCorrection',$QCMApplication->id) }}" target="_blank"><button class="btn btn-primary bgPurpleButton"><i class="bi bi-eye"></i></button></a></td>
                 </tr>
             @endforeach
