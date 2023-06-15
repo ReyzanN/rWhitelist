@@ -22,7 +22,7 @@
                                     <div>
                                         <div class="row">
                                             <div class="col-8">
-                                                <p class="mt-2">Date de la session :</p>
+                                                <p class="mt-2">Heure de la session :</p>
                                                 <hr>
                                                 <p class="mt-2">Nombre d'inscrit</p>
                                                 <hr>
