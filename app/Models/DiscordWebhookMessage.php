@@ -31,7 +31,7 @@ class DiscordWebhookMessage
                     "title" => "Nouvelle session de recrutement",
                     "type" => "rich",
                     "description" => "Vous trouverez sur le panel une nouvelle session de recrutement, pour vous y rendre aller sur votre compte dans l'option Session, vous pourrez vous inscrire",
-                    "url" => "http://rwhitelist.local/sessions",
+                    "url" => env('APP_URL'),
                     "timestamp" => $TimeStamps,
                     "color" => hexdec( "b56690"),
                     "footer" => [
@@ -59,8 +59,8 @@ class DiscordWebhookMessage
                         ],
                         [
                             "name" => "Lien d'inscription",
-                            "value" => "http://rwhitelist.local/session",
-                            "url" => "http://rwhitelist.local/session",
+                            "value" => route('candidate.sessions.view'),
+                            "url" => route('candidate.sessions.view'),
                             "inline" => false
                         ]
                     ]
