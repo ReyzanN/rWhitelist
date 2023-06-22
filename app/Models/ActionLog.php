@@ -28,6 +28,13 @@ class ActionLog extends Model
             2 => "POST",
             3 => "UPDATE",
             4 => "DELETE",
+            5 => "FORCE WL",
+            6 => "REMOVE WL",
+            7 => "FORCE QCM",
+            8 => "REMOVE QCM",
+            9 => "FORCE AP",
+            10 => "REMOVE AP",
+            11 => "UPDATE NOTE",
             default => "error",
         };
     }
