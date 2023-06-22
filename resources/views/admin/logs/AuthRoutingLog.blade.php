@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title','Admin - Logs')
+@section('title','Admin - Auth Routing Log')
 
 @section('content')
     @include('layouts.admin.nav')

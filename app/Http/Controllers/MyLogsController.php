@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AuthRoutingLog;
+use App\Models\ConnectionLog;
 use App\Models\GuestRoutingLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -25,6 +26,11 @@ class MyLogsController extends Controller
     public function ViewGuestRoutingLogs(){
         $GuestLog = GuestRoutingLog::all();
         return view('admin.logs.GuestRoutingLog', ['GuestRoutingLog' => $GuestLog]);
+    }
+
+    public function ViewConnectionLogs(){
+        $ConnectionLogs = ConnectionLog::all();
+        return view('admin.logs.ConnectionLog', ['ConnectionLogs' => $ConnectionLogs]);
     }
 
     public function ClearRoutingLogs() {

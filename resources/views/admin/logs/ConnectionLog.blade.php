@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title','Admin - Guest Routing Log')
+@section('title','Admin - Connection Log')
 
 @section('content')
     @include('layouts.admin.nav')
@@ -16,17 +16,25 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Ip</th>
-                    <th scope="col">URL</th>
+                    <th scope="col">DiscordAccountId</th>
+                    <th scope="col">IP</th>
+                    <th scope="col">Résultat</th>
                     <th scope="col">Date & Heure</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($GuestRoutingLog as $Log)
+                @foreach($ConnectionLogs as $Log)
                     <tr>
                         <th scope="row">{{ $Log->id }}</th>
-                        <td>{{ $Log->guestInformations }}</td>
-                        <td>{{ $Log->url }}</td>
+                        <td>{{ $Log->discordAccountId }}</td>
+                        <td>{{ $Log->ip }}</td>
+                        <td>
+                            @if($Log->result)
+                                <span class="badge text-bg-success">Ok</span>
+                            @else
+                                <span class="badge text-bg-danger">Échec</span>
+                            @endif
+                        </td>
                         <td>{{ $Log->created_at }}</td>
                     </tr>
                 @endforeach

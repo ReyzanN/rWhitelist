@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BanList;
+use App\Models\ConnectionLog;
 use App\Models\DiscordAuth;
 use App\Models\User;
 use App\Models\UserRank;
@@ -19,7 +20,7 @@ class AuthController extends Controller
         exit();
     }
 
-    public function TryLogin(){
+    public function TryLogin(Request $request){
         $DiscordAuth = new DiscordAuth($_GET['code']);
         if (!$DiscordAuth->PerformRequest()) {
             Session::flash('Failure','Vous n\'êtes pas sur le discord');
@@ -62,11 +63,12 @@ class AuthController extends Controller
                     $auth = true;
                 }
             }catch (\Exception $e){
-                dd($e);
+                //
             }
             if ($auth){
                 // Redirect dashboard
                 auth()->user()->avatar = $ClientInfo['Avatar'];
+                ConnectionLog::CreateElement(array($ClientInfo['DiscordId'],$request->ip(),1));
                 return redirect()->route('dashPublic.index');
             }
         }
@@ -74,6 +76,7 @@ class AuthController extends Controller
         if ($Ban){
             Session::flash('Failure', 'Vous êtes banni pour la raison suivante : '.$Ban->reason.' - Expiration : '.$Ban->parseDateToString($Ban->expiration));
         }
+        ConnectionLog::CreateElement(array($ClientInfo['DiscordId'],$request->ip(),0));
         // Add error message
         return redirect()->route('base');
     }

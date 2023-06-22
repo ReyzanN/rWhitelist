@@ -121,7 +121,7 @@ class DiscordWebhookMessage
         curl_close($Curl);
     }
 
-    public function SendRecapSession($SessionId,$SessionDate,$SessionCandidate,$SessionCandidateCount,$SessionMaxCandidate,$Creator,$SessionTheme,$FieldList){
+    public function SendRecapSession($SessionId,$Creator,$FieldList){
         $TimeStamps = date("c", strtotime("now"));
         $MessageContent = json_encode([
             "username" => "Oggy Les Bon Tuyaux",
@@ -141,6 +141,62 @@ class DiscordWebhookMessage
                         "url" => env('APP_URL')
                     ],
                     "fields" => $FieldList
+                ]
+            ]
+
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+        $Curl = curl_init($this->_Url);
+        curl_setopt($Curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        curl_setopt($Curl, CURLOPT_POST, 1);
+        curl_setopt($Curl, CURLOPT_POSTFIELDS, $MessageContent);
+        curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($Curl, CURLOPT_HEADER, 0);
+        curl_setopt($Curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_exec($Curl);
+        curl_close($Curl);
+    }
+
+    /*
+     * LOGS
+     */
+    public function SendConnectionWebHook($Ip,$DiscordAccountId,$Status){
+        if ($Status) { $Status = "Ok"; } else { $Status = "Echec"; }
+        $TimeStamps = date("c", strtotime("now"));
+        $MessageContent = json_encode([
+            "username" => "Connection Log",
+            "tts" => false,
+            "embeds" => [
+                [
+                    "title" => "Tentative de connexion",
+                    "type" => "rich",
+                    "description" => "",
+                    "timestamp" => $TimeStamps,
+                    "color" => hexdec( "b56690"),
+                    "footer" => [
+                        "text" => 'Message Automatique',
+                    ],
+                    "author" => [
+                        "name" => "Classic Roleplay",
+                        "url" => env('APP_URL')
+                    ],
+                    "fields" => [
+                        [
+                            "name" => "Discord",
+                            "value" => "<@$DiscordAccountId>",
+                            "inline" => true
+                        ],
+                        [
+                            "name" => "Depuis l'IP",
+                            "value" => "$Ip",
+                            "inline" => true
+                        ],
+                        [
+                            "name" => "Status",
+                            "value" => $Status,
+                            "inline" => true
+                        ]
+                    ]
                 ]
             ]
 

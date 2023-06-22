@@ -188,6 +188,10 @@ Route::middleware(['LoggingSystemRouting'])->group(function(){
              * Guest Routing Log View
              */
             Route::get('/app/log/guest/view', [MyLogsController::class, 'ViewGuestRoutingLogs'])->name('log.guest.view');
+            /*
+             * View Connection Logs
+             */
+            Route::get('/app/log/connection/view', [MyLogsController::class, 'ViewConnectionLogs'])->name('log.connection.view');
         });
     });
 
