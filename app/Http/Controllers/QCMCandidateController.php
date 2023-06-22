@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QCMCandidateValidateRequest;
+use App\Models\ActionLog;
 use App\Models\QCMCandidate;
 use App\Models\QCMCandidateAnswer;
 use App\Models\QuestionFirstChance;
@@ -41,9 +42,11 @@ class QCMCandidateController extends Controller
                 }
                 Session::flash('Success', 'Merci les recruteurs vont étudier vos réponses.');
                 $QCMID->update(['active' => 0]);
+                ActionLog::createElement(array('QCMCandidateController',12,1,$QCMID));
                 return redirect()->back();
             }
             Session::flash('Failure','Vous avez déjà envoyé ce questionnaire');
+            ActionLog::createElement(array('QCMCandidateController',12,0,$QCMID));
             return redirect()->back();
         }
     }
@@ -61,17 +64,19 @@ class QCMCandidateController extends Controller
             return view('public.qcm.ajaxModalContentQCMErrors');
         }
         $QCM = $QuestionsList[0]->QCMCandidate();
+        ActionLog::createElement(array('QCMCandidateController',1,1,$QCM));
         return view('public.qcm.ajaxModalContentQCM',['QuestionsList' => $QuestionsList, 'QCM' => $QCM]);
     }
 
     public function ContinueQCM(Request $request){
         $QCM = QCMCandidate::where(['idUser' => auth()->user()->id, 'id' => $request->only('data')['data']])->get()->first();
-        if (!$QCM){
+        if (!$QCM || !$QCM->active){
+            ActionLog::createElement(array('QCMCandidateController',14,0,$QCM));
             return view('public.qcm.errorPage',['Error' => 'Tu n\'as rien à foutre la']);
         }
-        if (!$QCM->active) { return view('public.qcm.errorPage',['Error' => 'Tu n\'as rien à foutre la']); }
         $QCMQuestion = $QCM->QCMAnswer();
         $QCM = $QCMQuestion[0]->QCMCandidate();
+        ActionLog::createElement(array('QCMCandidateController',13,1,$QCM));
         return view('public.qcm.ajaxModalContentQCM',['QuestionsList' => $QCMQuestion, 'QCM' => $QCM]);
     }
 }
