@@ -6,6 +6,7 @@ use App\Http\Controllers\CandidateManagementController;
 use App\Http\Controllers\DashboardPublicController;
 use App\Http\Controllers\DashboardRecruitersController;
 use App\Http\Controllers\HomePublicController;
+use App\Http\Controllers\MyLogsController;
 use App\Http\Controllers\QCMCandidateController;
 use App\Http\Controllers\QCMController;
 use App\Http\Controllers\RecruitmentSessionCandidateController;
@@ -24,57 +25,58 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/* Base Route */
-Route::get('/', HomePublicController::class)->name('base');
+Route::middleware(['LoggingSystemRouting'])->group(function(){
+    /* Base Route */
+    Route::get('/', HomePublicController::class)->name('base');
 
-/* Auth Route */
-Route::get('/login',[AuthController::class, 'Login'])->name('auth.login');
-Route::get('/loginValidation', [AuthController::class, 'TryLogin'])->name('auth.trylogin');
-Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
+    /* Auth Route */
+    Route::get('/login',[AuthController::class, 'Login'])->name('auth.login');
+    Route::get('/loginValidation', [AuthController::class, 'TryLogin'])->name('auth.trylogin');
+    Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
 
-Route::middleware(['auth','killSession'])->group(function(){
-    /* Dashboard */
-    Route::get('/dashboard', DashboardPublicController::class)->name('dashPublic.index');
+    Route::middleware(['auth','killSession'])->group(function(){
+        /* Dashboard */
+        Route::get('/dashboard', DashboardPublicController::class)->name('dashPublic.index');
 
-    /*
-     * Profile
-     */
-    Route::get('/dashboard/myProfile', [DashboardPublicController::class, 'viewProfile'])->name('dashPublic.profile');
-    Route::post('/dashboard/myProfile/updateInformations', [UsersController::class,'UpdateInformation'])->name('users.updateInformation');
+        /*
+         * Profile
+         */
+        Route::get('/dashboard/myProfile', [DashboardPublicController::class, 'viewProfile'])->name('dashPublic.profile');
+        Route::post('/dashboard/myProfile/updateInformations', [UsersController::class,'UpdateInformation'])->name('users.updateInformation');
 
 
-    /*
-     * Candidate QCM
-     */
-    Route::get('/qcm/candidate',QCMCandidateController::class)->name('qcm.candidate.index');
-    Route::post('/qcm/candidate/validate',[QCMCandidateController::class,'ValidateQCM'])->name('qcm.candidate.validate');
+        /*
+         * Candidate QCM
+         */
+        Route::get('/qcm/candidate',QCMCandidateController::class)->name('qcm.candidate.index');
+        Route::post('/qcm/candidate/validate',[QCMCandidateController::class,'ValidateQCM'])->name('qcm.candidate.validate');
         /*
          * Ajax
          */
         Route::post('/qcm/candidate/apply/ajax', [QCMCandidateController::class,'GetQCM'])->name('qcm.candidate.getQCM.ajax');
         Route::post('/qcm/candidate/continue/', [QCMCandidateController::class,'ContinueQCM'])->name('qcm.candidate.continue.ajax');
 
-    /*
-     * Sessions
-     */
-    Route::get('/sessions/',RecruitmentSessionCandidateController::class)->name('candidate.sessions.view');
-
-    Route::get('/sessions/unregister/{SessionId}', [RecruitmentSessionCandidateController::class, 'UnRegisterForSession'])->name('candidate.sessions.unregister');
-
-    Route::post('/sessions/register', [RecruitmentSessionCandidateController::class,'RegisterForSession'])->name('candidate.sessions.register');
-
-    /*
-     * Recruiters Route
-     */
-    Route::middleware(['recruiters'])->group(function(){
         /*
-         * Dashboard
+         * Sessions
          */
-        Route::get('/dashboard/recruiters', DashboardRecruitersController::class)->name('dashRecruiters.index');
+        Route::get('/sessions/',RecruitmentSessionCandidateController::class)->name('candidate.sessions.view');
+
+        Route::get('/sessions/unregister/{SessionId}', [RecruitmentSessionCandidateController::class, 'UnRegisterForSession'])->name('candidate.sessions.unregister');
+
+        Route::post('/sessions/register', [RecruitmentSessionCandidateController::class,'RegisterForSession'])->name('candidate.sessions.register');
+
         /*
-         * QCM Management
+         * Recruiters Route
          */
-        Route::get('/recruiters/qcm/', [QCMController::class,'index'])->name('qcm.index');
+        Route::middleware(['recruiters'])->group(function(){
+            /*
+             * Dashboard
+             */
+            Route::get('/dashboard/recruiters', DashboardRecruitersController::class)->name('dashRecruiters.index');
+            /*
+             * QCM Management
+             */
+            Route::get('/recruiters/qcm/', [QCMController::class,'index'])->name('qcm.index');
             /*
              * Question Type QCM
              */
@@ -101,11 +103,11 @@ Route::middleware(['auth','killSession'])->group(function(){
             Route::post('/recruiters/qcm/question/type/update/ajax', [QCMController::class, 'SearchQuestionTypeID'])->name('qcm.questionType.ajax.update');
             Route::post('/recruiters/qcm/question/update/ajax', [QCMController::class, 'SearchQuestionFirstChanceID'])->name('qcm.questionFirstChance.ajax.update');
 
-        /*
-         * Sessions Management
-         */
-        Route::get('/recruiters/sessions/', RecruitmentSessionsController::class)->name('recruiters.sessions.view');
-        Route::post('/recruiters/sessions/add', [RecruitmentSessionsController::class,'AddSession'])->name('recruiters.sessions.add');
+            /*
+             * Sessions Management
+             */
+            Route::get('/recruiters/sessions/', RecruitmentSessionsController::class)->name('recruiters.sessions.view');
+            Route::post('/recruiters/sessions/add', [RecruitmentSessionsController::class,'AddSession'])->name('recruiters.sessions.add');
 
             /*
              * Recruiters Session Register
@@ -113,36 +115,36 @@ Route::middleware(['auth','killSession'])->group(function(){
             Route::get('/recruiters/sessions/register/{IdSession}', [RecruitmentSessionsController::class,'RegisterRecruitersForSession'])->name('recruiters.session.register');
             Route::get('/recruiters/sessions/unregister/{IdSession}', [RecruitmentSessionsController::class,'RemoveRegistrationRecruitersForSession'])->name('recruiters.session.unregister');
 
-        Route::get('/recruiters/sessions/view/{IdSession}', [RecruitmentSessionsController::class, 'ViewSession'])->name('recruiters.viewSession');
+            Route::get('/recruiters/sessions/view/{IdSession}', [RecruitmentSessionsController::class, 'ViewSession'])->name('recruiters.viewSession');
 
-        Route::get('/recruiters/sessions/terminate/{IdSession}',[RecruitmentSessionsController::class,'TerminateSession'])->name('recruiters.terminateSession');
+            Route::get('/recruiters/sessions/terminate/{IdSession}',[RecruitmentSessionsController::class,'TerminateSession'])->name('recruiters.terminateSession');
 
-        /*
-         * Appointment Outcome
-         */
-        Route::get('/recruiters/sessions/validateCandidate/{IdSession}/{IdUser}', [RecruitmentSessionsController::class, 'ValidatedAppointment'])->name('recruiters.sessions.validateCandidate');
-        Route::get('/recruiters/sessions/refusedCandidate/{IdSession}/{IdUser}', [RecruitmentSessionsController::class, 'RefusedAppointment'])->name('recruiters.sessions.refusedCandidate');
-        Route::get('/recruiters/sessions/permanentRefused/{IdSession}/{IdUser}', [RecruitmentSessionsController::class, 'RefusedPermanentAppointment'])->name('recruiters.sessions.permanentRefused');
+            /*
+             * Appointment Outcome
+             */
+            Route::get('/recruiters/sessions/validateCandidate/{IdSession}/{IdUser}', [RecruitmentSessionsController::class, 'ValidatedAppointment'])->name('recruiters.sessions.validateCandidate');
+            Route::get('/recruiters/sessions/refusedCandidate/{IdSession}/{IdUser}', [RecruitmentSessionsController::class, 'RefusedAppointment'])->name('recruiters.sessions.refusedCandidate');
+            Route::get('/recruiters/sessions/permanentRefused/{IdSession}/{IdUser}', [RecruitmentSessionsController::class, 'RefusedPermanentAppointment'])->name('recruiters.sessions.permanentRefused');
 
-        /*
-         * Ajax
-         */
-        Route::post('/recruiters/session/view/candidate', [RecruitmentSessionsController::class, 'ViewCandidate'])->name('recruiters.session.view.candidate.ajax');
-        Route::post('/recruiters/session/call/candidate', [RecruitmentSessionsController::class, 'CallCandidateSpecific'])->name('recruiters.session.candidate.call.ajax');
-        Route::post('/recruiters/session/call/candidate/all', [RecruitmentSessionsController::class, 'CallCandidateSpecificAll'])->name('recruiters.session.candidate.call.all.ajax');
+            /*
+             * Ajax
+             */
+            Route::post('/recruiters/session/view/candidate', [RecruitmentSessionsController::class, 'ViewCandidate'])->name('recruiters.session.view.candidate.ajax');
+            Route::post('/recruiters/session/call/candidate', [RecruitmentSessionsController::class, 'CallCandidateSpecific'])->name('recruiters.session.candidate.call.ajax');
+            Route::post('/recruiters/session/call/candidate/all', [RecruitmentSessionsController::class, 'CallCandidateSpecificAll'])->name('recruiters.session.candidate.call.all.ajax');
 
-        /*
-         * Ban List
-         */
-        Route::get('/recruiters/ban/list/view',[BanListController::class, 'DisplayBanList'])->name('recruiters.banlist.view');
-        Route::post('/recruiters/ban/add/', [BanListController::class, 'AddBan'])->name('recruiters.ban.add');
-        Route::get('/recruiters/ban/remove/{BanId}', [BanListController::class, 'RemoveBan'])->name('recruiters.ban.remove');
-        Route::post('/recruiters/ban/update/', [BanListController::class, 'UpdateBan'])->name('recruiters.ban.update');
+            /*
+             * Ban List
+             */
+            Route::get('/recruiters/ban/list/view',[BanListController::class, 'DisplayBanList'])->name('recruiters.banlist.view');
+            Route::post('/recruiters/ban/add/', [BanListController::class, 'AddBan'])->name('recruiters.ban.add');
+            Route::get('/recruiters/ban/remove/{BanId}', [BanListController::class, 'RemoveBan'])->name('recruiters.ban.remove');
+            Route::post('/recruiters/ban/update/', [BanListController::class, 'UpdateBan'])->name('recruiters.ban.update');
 
-        /*
-         * Candidate Management
-         */
-        Route::get('/recruiters/candidate/view/all', [CandidateManagementController::class, 'RecruitersCandidateManagementIndex'])->name('recruiters.candidate.view');
+            /*
+             * Candidate Management
+             */
+            Route::get('/recruiters/candidate/view/all', [CandidateManagementController::class, 'RecruitersCandidateManagementIndex'])->name('recruiters.candidate.view');
             /*
              * Ajax
              */
@@ -170,5 +172,30 @@ Route::middleware(['auth','killSession'])->group(function(){
              */
             Route::post('/recruiters/candidate/update/note',[CandidateManagementController::class,'UpdateNote'])->name('recruiters.candidate.update.note');
 
+        });
+
+        Route::middleware(['MyLogs'])->group(function(){
+            Route::get('/app/logs', MyLogsController::class)->name('logs.index');
+            /*
+             * Delete Routing Log All
+             */
+            Route::get('/app/log/delete/routing/all', [MyLogsController::class, 'ClearRoutingLogs'])->name('log.clear.routing.all');
+            /*
+             * Auth Routing Log View
+             */
+            Route::get('/app/log/AuthLog/view',[MyLogsController::class, 'ViewAuthRoutingLogs'])->name('log.auth.view');
+            /*
+             * Guest Routing Log View
+             */
+            Route::get('/app/log/guest/view', [MyLogsController::class, 'ViewGuestRoutingLogs'])->name('log.guest.view');
+        });
+    });
+
+    /*
+    * Error 404 / Patch For Logging System
+    */
+    Route::fallback(function(){
+        abort(404);
     });
 });
+

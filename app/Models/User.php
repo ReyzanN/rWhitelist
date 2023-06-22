@@ -27,7 +27,8 @@ class User extends Authenticatable
         'killSession',
         'note',
         'birthdate',
-        'steamId'
+        'steamId',
+        'logsAlert'
     ];
 
     /**
@@ -202,5 +203,12 @@ class User extends Authenticatable
         return count(UserRank::where(['roleId' => env('APP_DISCORD_WL')])->get());
     }
 
-
+    public function CanSeeLogs(): bool {
+        foreach ($this->userRank() as $Rank) {
+            if ($Rank->roleId == env('APP_DISCORD_LOGS')) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

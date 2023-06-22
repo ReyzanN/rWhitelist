@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\UserRank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use MongoDB\Driver\Exception\ExecutionTimeoutException;
 
 class CandidateManagementController extends Controller
 {
