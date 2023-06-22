@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Session;
 class Controller extends BaseController
 {
 
-    private string $_ControllerName;
-
     use AuthorizesRequests, ValidatesRequests;
 
     public function setFailure($Message): void

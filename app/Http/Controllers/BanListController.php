@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Session;
 
 class BanListController extends Controller
 {
-
-     private string $_ControllerName = "Ban";
-
     public function __construct(){
         $this->middleware(['auth','recruiters']);
     }
