@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('controller');
             $table->string('type');
             $table->string('result');
+            $table->longText('Element')->nullable(true);
             $table->timestamps();
         });
     }
