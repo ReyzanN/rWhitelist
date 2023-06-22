@@ -38,6 +38,14 @@ class ActionLog extends Model
             12 => "VALIDATE_QCM",
             13 => "CONTINUE_QCM",
             14 => "CONTINUE_QCM_ABUS",
+            15 => "MARKED_QCM",
+            16 => "VIEW_QCM",
+            17 => "MARKED_QUESTION",
+            18 => "ABUSED_MARKING_QCM",
+            19 => "QUESTION_NOT_BELONG_TO_CANDIDATE",
+            20 => "QCM_ABUSE",
+            21 => "QCM_FINAL_UPDATE",
+            22 => "SEARCH_QCM",
             default => "error",
         };
     }
