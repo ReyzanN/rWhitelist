@@ -192,6 +192,10 @@ Route::middleware(['LoggingSystemRouting'])->group(function(){
              * View Connection Logs
              */
             Route::get('/app/log/connection/view', [MyLogsController::class, 'ViewConnectionLogs'])->name('log.connection.view');
+            /*
+             * View Actions Logs
+             */
+            Route::get('/app/log/action/view', [MyLogsController::class, 'ViewAllLogsAction'])->name('log.action.view');
         });
     });
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActionLog;
 use App\Models\AuthRoutingLog;
 use App\Models\ConnectionLog;
 use App\Models\GuestRoutingLog;
@@ -33,12 +34,19 @@ class MyLogsController extends Controller
         return view('admin.logs.ConnectionLog', ['ConnectionLogs' => $ConnectionLogs]);
     }
 
+    public function ViewAllLogsAction(){
+        $ActionLogs = ActionLog::all();
+        return view('admin.logs.ActionLog', ['ActionLog' => $ActionLogs]);
+    }
+
     public function ClearRoutingLogs() {
         try {
             AuthRoutingLog::Clear();
             GuestRoutingLog::Clear();
+            ActionLog::createElement(array('MyLogsController',4,1));
             Session::flash('Success','Log Routing Supprimé');
         }catch (\Exception $e){
+            ActionLog::createElement(array('MyLogsController',4,0));
             Session::flash('Failure','Une erreur est survenue');
         }
         return redirect()->back();

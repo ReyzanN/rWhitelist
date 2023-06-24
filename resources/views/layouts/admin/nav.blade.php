@@ -26,6 +26,8 @@
                         <li><a class="dropdown-item" href="{{ route('log.connection.view') }}"><i class="bi bi-door-open"></i>&nbsp;Connection Logs</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#"><i class="bi bi-people"></i>&nbsp;Users Logs</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ route('log.action.view') }}"><i class="bi bi-newspaper"></i>&nbsp;All Logs - Actions</a></li>
                     </ul>
                 </li>
             </ul>
