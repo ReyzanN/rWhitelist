@@ -75,6 +75,21 @@ class User extends Authenticatable
         return $this->hasMany(RecruitmentSessionCandidateRegistration::class,'idUser','id')->get();
     }
 
+    /*
+     * Log References
+     */
+    public function GetRoutingLog(){
+        return $this->hasMany(AuthRoutingLog::class, 'discordAccountId', 'discordAccountId')->get();
+    }
+
+    public function GetActionLog(){
+        return $this->hasMany(ActionLog::class, 'discordAccountId', 'discordAccountId')->get();
+    }
+
+    public function GetConnectionLog(){
+        return $this->hasMany(ConnectionLog::class, 'discordAccountId', 'discordAccountId')->get();
+    }
+
     /* --- */
 
     public static function checkAccount(string $DiscordIDAccount) : bool {

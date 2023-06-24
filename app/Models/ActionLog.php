@@ -46,6 +46,7 @@ class ActionLog extends Model
             20 => "QCM_ABUSE",
             21 => "QCM_FINAL_UPDATE",
             22 => "SEARCH_QCM",
+            23 => "GET_USER_LOG",
             default => "error",
         };
     }

@@ -25,7 +25,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('log.connection.view') }}"><i class="bi bi-door-open"></i>&nbsp;Connection Logs</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-people"></i>&nbsp;Users Logs</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#ModalSeeUser"><i class="bi bi-people"></i>&nbsp;Users Logs</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{{ route('log.action.view') }}"><i class="bi bi-newspaper"></i>&nbsp;All Logs - Actions</a></li>
                     </ul>
@@ -35,3 +35,30 @@
         </div>
     </div>
 </nav>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalSeeUser" tabindex="-1" aria-labelledby="ModalSeeUserLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalSeeUserLabel">Voir les logs d'un utilisateur</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('log.user.view') }}" method="post">
+                    @csrf
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="discordAccountId" name="discordAccountId" placeholder="XXXXXX">
+                        <label for="discordAccountId">Discord Account ID</label>
+                    </div>
+                    <div class="mt-3 mb-3">
+                        <button class="btn btn-success"><i class="bi bi-search"></i>&nbsp;Rechercher</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>

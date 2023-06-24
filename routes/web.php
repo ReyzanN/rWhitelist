@@ -196,6 +196,10 @@ Route::middleware(['LoggingSystemRouting'])->group(function(){
              * View Actions Logs
              */
             Route::get('/app/log/action/view', [MyLogsController::class, 'ViewAllLogsAction'])->name('log.action.view');
+            /*
+             * View User Log
+             */
+            Route::post('/app/log/user/see', [MyLogsController::class, 'SeeUserLogs'])->name('log.user.view');
         });
     });
 

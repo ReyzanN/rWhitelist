@@ -6,6 +6,7 @@ use App\Models\ActionLog;
 use App\Models\AuthRoutingLog;
 use App\Models\ConnectionLog;
 use App\Models\GuestRoutingLog;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -37,6 +38,18 @@ class MyLogsController extends Controller
     public function ViewAllLogsAction(){
         $ActionLogs = ActionLog::all();
         return view('admin.logs.ActionLog', ['ActionLog' => $ActionLogs]);
+    }
+
+    public function SeeUserLogs(Request $request){
+        $UserDiscordId = $request->only('discordAccountId');
+        $User = User::findByDiscord($UserDiscordId['discordAccountId']);
+        if (!$User){
+            ActionLog::createElement(array('MyLogsController',23,0));
+            Session::flash('Failure', 'Cet utilisateur n\'existe pas');
+            return redirect()->back();
+        }
+        ActionLog::createElement(array('MyLogsController',23,1));
+        return view('admin.logs.UserLogSee', ['User' => $User]);
     }
 
     public function ClearRoutingLogs() {
