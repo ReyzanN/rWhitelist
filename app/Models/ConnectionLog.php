@@ -21,9 +21,9 @@ class ConnectionLog extends Model
      * Function
      */
     public static function CreateElement(array $Element){
-        $DiscordWebHook = new DiscordWebhookMessage(env('APP_DISCORD_WEBHOOK_CONNECTION'));
+        //$DiscordWebHook = new DiscordWebhookMessage(env('APP_DISCORD_WEBHOOK_CONNECTION'));
         try {
-            $DiscordWebHook->SendConnectionWebHook($Element[1],$Element[0],$Element[2]);
+            //$DiscordWebHook->SendConnectionWebHook($Element[1],$Element[0],$Element[2]);
             return ConnectionLog::create([
                 'discordAccountId' => $Element[0],
                 'ip' => $Element[1],
